@@ -2,8 +2,8 @@
 // Created by Vinu on 9/13/19.
 //
 
-#ifndef SHOOTER_RENDERER_H
-#define SHOOTER_RENDERER_H
+#ifndef SPACE_INVADERS_RENDERER_H
+#define SPACE_INVADERS_RENDERER_H
 
 #include "SDL.h";
 #include <memory>;
@@ -14,7 +14,11 @@ private:
     SDL_Window *mWindow;
     SDL_Renderer *mRenderer;
 
+    int mWindowWidth, mWindowHeight;
+
     void ThrowIfError(bool isError, const std::string &errMsg);
+
+    void RenderTexture(SDL_Texture *texture, int x, int y, int w, int h);
 
     void Cleanup();
 
@@ -26,4 +30,4 @@ public:
     void RenderBackground(const std::string &path);
 };
 
-#endif //SHOOTER_RENDERER_H
+#endif //SPACE_INVADERS_RENDERER_H

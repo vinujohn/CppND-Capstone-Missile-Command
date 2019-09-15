@@ -3,9 +3,10 @@
 //
 
 #include <iostream>
-#include "renderer.h"
+#include "Renderer.h"
 #include "SDL.h"
 #include "SDL_image.h"
+#include <cmath>
 
 void Renderer::ThrowIfError(bool isError, const std::string &errMsg) {
     if (isError) {
@@ -15,7 +16,8 @@ void Renderer::ThrowIfError(bool isError, const std::string &errMsg) {
     }
 }
 
-Renderer::Renderer(int windowWidth, int windowHeight) {
+Renderer::Renderer(int windowWidth, int windowHeight)
+    : mWindowWidth(windowWidth), mWindowHeight(windowHeight) {
     // initialize SDL
     ThrowIfError(
             SDL_Init(SDL_INIT_VIDEO) != 0,
@@ -28,7 +30,7 @@ Renderer::Renderer(int windowWidth, int windowHeight) {
 
     // create a window
     mWindow = SDL_CreateWindow(
-            "Shooter Game",
+            "Space Invaders",
             SDL_WINDOWPOS_CENTERED,
             SDL_WINDOWPOS_CENTERED,
             windowWidth,
@@ -63,8 +65,16 @@ void Renderer::RenderBackground(const std::string &filePath) {
 
     // Clear any other drawing
     SDL_RenderClear(mRenderer);
-    // Draw the texture
-    SDL_RenderCopy(mRenderer, texture, nullptr, nullptr);
+
+    // Draw the texture multiple times till it fills the whole window
+    int textureWidth, textureHeight;
+    SDL_QueryTexture(texture, nullptr, nullptr, &textureWidth, &textureHeight);
+    for(int h = 0; h < std::ceil((float)mWindowHeight/textureHeight); h++){
+        for(int w=0; w < std::ceil((float)mWindowWidth/textureWidth); w++){
+            RenderTexture(texture, w * textureWidth, h * textureHeight, textureWidth, textureHeight);
+        }
+    }
+
     // Update the screen
     SDL_RenderPresent(mRenderer);
 }
@@ -78,4 +88,10 @@ void Renderer::Cleanup() {
     }
     IMG_Quit();
     SDL_Quit();
+}
+
+void Renderer::RenderTexture(SDL_Texture *texture, int x, int y, int w, int h) {
+    SDL_Rect dst;
+    dst.x = x, dst.y = y, dst.w = w, dst.h = h;
+    SDL_RenderCopy(mRenderer, texture, nullptr, &dst);
 }
