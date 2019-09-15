@@ -1,11 +1,12 @@
 #include "SDL.h";
-#include "renderer.h";
+#include "Renderer.h";
 #include <iostream>
 
 int main() {
-    constexpr int windowWidth = 640;
-    constexpr int windowHeight = 640;
-    const std::string bgFile = "./assets/background/space.png";
+    constexpr int windowWidth = 800;
+    constexpr int windowHeight = 800;
+    const std::string bgFile = "./assets/space.png";
+    const std::string spriteFile = "./assets/sprites.png";
 
     Renderer r(windowWidth, windowHeight);
 
