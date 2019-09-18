@@ -1,6 +1,7 @@
 #include "SDL.h";
 #include "Renderer.h";
 #include <iostream>
+#include <vector>
 
 int main() {
     constexpr int windowWidth = 800;
@@ -10,7 +11,15 @@ int main() {
 
     Renderer r(windowWidth, windowHeight);
 
-    r.RenderBackground(bgFile);
+    //r.RenderBackground(bgFile);
+
+    // Load sprites
+    std::vector<Renderer::Rectangle> enemies;
+    enemies.push_back(Renderer::Rectangle{50,1850,50,50});
+    auto ship = Renderer::Rectangle{420, 1920, 50, 50};
+    auto explosion = Renderer::Rectangle{430, 270, 30, 30};
+    auto bullet = Renderer::Rectangle{430, 1870, 30, 30};
+    r.LoadSprites(spriteFile, enemies, 2, ship, explosion, bullet);
 
     bool isquit = false;
     SDL_Event event;

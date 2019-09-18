@@ -13,6 +13,8 @@ class Renderer {
 private:
     SDL_Window *mWindow;
     SDL_Renderer *mRenderer;
+    SDL_Texture *mSpriteSheetTexture;
+    SDL_Rect *mEnemySprites;
 
     int mWindowWidth, mWindowHeight;
 
@@ -23,11 +25,21 @@ private:
     void Cleanup();
 
 public:
+    struct Rectangle{
+        int x,y,w,h;
+    };
+
     Renderer(int windowWidth, int windowHeight);
 
     ~Renderer();
 
     void RenderBackground(const std::string &path);
+    void LoadSprites(const std::string &filePath,
+            std::vector<Rectangle> enemies,
+            int numEnemyFrames,
+            Rectangle ship,
+            Rectangle explosion,
+            Rectangle bullet);
 };
 
 #endif //SPACE_INVADERS_RENDERER_H

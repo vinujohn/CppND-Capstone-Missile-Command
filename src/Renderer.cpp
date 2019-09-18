@@ -7,6 +7,7 @@
 #include "SDL.h"
 #include "SDL_image.h"
 #include <cmath>
+#include <vector>
 
 void Renderer::ThrowIfError(bool isError, const std::string &errMsg) {
     if (isError) {
@@ -80,6 +81,9 @@ void Renderer::RenderBackground(const std::string &filePath) {
 }
 
 void Renderer::Cleanup() {
+    if(mSpriteSheetTexture != nullptr){
+        SDL_DestroyTexture(mSpriteSheetTexture);
+    }
     if (mRenderer != nullptr) {
         SDL_DestroyRenderer(mRenderer);
     }
@@ -94,4 +98,21 @@ void Renderer::RenderTexture(SDL_Texture *texture, int x, int y, int w, int h) {
     SDL_Rect dst;
     dst.x = x, dst.y = y, dst.w = w, dst.h = h;
     SDL_RenderCopy(mRenderer, texture, nullptr, &dst);
+}
+
+void Renderer::LoadSprites(
+        const std::string &filePath,
+        std::vector<Rectangle> enemies,
+        int numEnemyFrames,
+        Rectangle ship,
+        Rectangle explosion,
+        Rectangle bullet) {
+
+    SDL_Texture *mSpriteSheetTexture = IMG_LoadTexture(mRenderer, filePath.c_str());
+    ThrowIfError(
+            mSpriteSheetTexture == nullptr,
+            "could not load texture for sprites");
+
+    auto r = SDL_Rect{ship.x, ship.y, ship.w, ship.h};
+    SDL_RenderCopy(mRenderer, mSpriteSheetTexture, )
 }
