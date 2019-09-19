@@ -13,7 +13,7 @@ find_package(SDL2 REQUIRED)
 find_package(SDL2_image REQUIRED)
 include_directories(${SDL2_INCLUDE_DIRS} ${SDL2_IMAGE_INCLUDE_DIRS} src)
 
-add_executable(SpaceInvaders src/Main.cpp src/Renderer.cpp src/Game.cpp src/Game.h)
+add_executable(SpaceInvaders src/Main.cpp src/Renderer.cpp src/Game.cpp src/Game.h src/Sprite.cpp src/Sprite.h)
 string(STRIP ${SDL2_LIBRARIES} SDL2_LIBRARIES)
 string(STRIP ${SDL2_IMAGE_LIBRARIES} SDL2_IMAGE_LIBRARIES)
 target_link_libraries(SpaceInvaders ${SDL2_LIBRARIES} ${SDL2_IMAGE_LIBRARIES})
