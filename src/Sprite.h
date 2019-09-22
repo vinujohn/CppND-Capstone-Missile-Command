@@ -1,25 +1,46 @@
 //
-// Created by Vinu on 9/19/19.
+// Created by Vinu on 9/21/19.
 //
 
 #ifndef SPACEINVADERS_SPRITE_H
 #define SPACEINVADERS_SPRITE_H
 
+#include <vector>
 
-#include <string>
-
-struct Coord2D{
+struct Rect{
     int x, y, w, h;
 };
 
-struct Sprite {
-    Coord2D Source;
-    std::string Name;
+class Sprite {
+public:
+    Sprite(std::vector<Rect> animations)
+        : mAnimations(animations), mDisplayed(false), mCurrentAnimationIndex(0){
+        //Take height and width from first animation for now.
+        mScreen = Rect{0,0, animations[0].w, animations[0].h};
+    }
+
+    void Hide(){mDisplayed = false;}
+    void Display(){mDisplayed = true;}
+    bool Displayed(){return mDisplayed;}
+
+    int X(){return mScreen.x;}
+    int Y(){return mScreen.y;}
+    int W(){return mScreen.w;}
+    int H(){return mScreen.h;}
+
+    void SetAnimationIndex(int index){ mCurrentAnimationIndex = index;}
+    const Rect GetAnimation(){return mAnimations[mCurrentAnimationIndex];}
+
+    void Move(int x, int y){
+        mScreen.x = x;
+        mScreen.y = y;
+    }
+
+private:
+    std::vector<Rect> mAnimations;
+    Rect mScreen;
+    bool mDisplayed;
+    int mCurrentAnimationIndex;
 };
-
-struct AnimatableSprite : public Sprite {
-
-};
-
 
 #endif //SPACEINVADERS_SPRITE_H

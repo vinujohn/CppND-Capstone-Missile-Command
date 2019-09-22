@@ -1,5 +1,5 @@
-#include "SDL.h";
-#include "Renderer.h";
+#include "SDL.h"
+#include "Renderer.h"
 #include <iostream>
 #include <vector>
 

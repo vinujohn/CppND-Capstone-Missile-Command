@@ -6,10 +6,14 @@
 #include <SDL_timer.h>
 #include "Game.h"
 
-Game::Game(int windowWidth, int windowHeight, int windowOffset){
+// TODO figure out how to initialize mCannon cleanly
+Game::Game(int windowWidth, int windowHeight, int windowOffset) {
     mWindowWidth = windowWidth;
     mWindowHeight = windowHeight;
     mWindowOffset = windowOffset;
+
+    mCannon = std::unique_ptr<Cannon>(new Cannon(std::vector<Rect>{{20, 42, 20, 18}},
+            std::vector<Rect>{{20, 60, 20, 14}}));
 
     firing = false;
     score = 0;
@@ -78,5 +82,34 @@ void Game::Update() {
             }
         }
     }
+}
+
+void Game::Run(int delayBetweenFramesMs, Controller &controller, void renderFunc()) {
+    Uint32 frameStart, frameTime;
+    mGameStateManager.SetState(GameState::Running);
+
+    while(mGameStateManager.CurrentGameState() != GameState::Ended){
+
+        frameStart = SDL_GetTicks();
+
+        // game loop
+        controller.HandleInput(mGameStateManager, *mCannon);
+        Update();
+        renderFunc(); //TODO temporary
+
+        switch(mGameStateManager.CurrentGameState()){
+            case GameState :: Ending:
+                mGameStateManager.SetState(GameState::Ended);
+                break;
+        }
+
+        frameTime = SDL_GetTicks() - frameStart;
+        if(frameTime < delayBetweenFramesMs)
+        {
+            SDL_Delay((int)(delayBetweenFramesMs - frameTime));
+        }
+    }
+
+    std::cout << "game has ended" << std::endl;
 }
 

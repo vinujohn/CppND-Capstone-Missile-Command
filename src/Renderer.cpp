@@ -133,7 +133,7 @@ void Renderer::LoadSprites(
     */
 }
 
-void Renderer::Render(Game g) {
+void Renderer::Render(Game &g) {
     SDL_RenderClear(mRenderer);
 
     SDL_RenderCopy(mRenderer, mBackground, nullptr, nullptr);

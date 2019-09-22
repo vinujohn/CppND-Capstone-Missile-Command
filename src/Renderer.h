@@ -47,7 +47,7 @@ public:
                      SpriteAsset explosion,
                      SpriteAsset bomb,
                      SpriteAsset projectile);
-    void Render(Game g);
+    void Render(Game &g);
 };
 
 #endif //SPACE_INVADERS_RENDERER_H

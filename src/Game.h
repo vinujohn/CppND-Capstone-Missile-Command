@@ -5,14 +5,17 @@
 #ifndef SPACEINVADERS_GAME_H
 #define SPACEINVADERS_GAME_H
 
-
 #include <string>
 #include <chrono>
 #include <SDL_types.h>
+#include "GameState.h"
+#include "Controller.h"
+#include "Cannon.h"
 
 class Game {
 public:
     Game(int windowWidth, int windowHeight, int windowOffset);
+    void Run(int delayBetweenFramesMs, Controller&, void renderFunc());
 
     struct Asset{
         std::string name;
@@ -39,6 +42,8 @@ public:
     void Update();
 
 private:
+    GameStateManager mGameStateManager;
+    std::unique_ptr<Cannon> mCannon;
     bool running;
     int score;
     int mWindowWidth, mWindowHeight, mWindowOffset;
