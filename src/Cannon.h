@@ -44,7 +44,7 @@ private:
     std::unique_ptr<Sprite> mProjectile;
     int mWindowWidth;
     bool mFiring;
-    static constexpr int mMoveCannonBy = 5;
+    static constexpr int mMoveCannonBy = 2;
 };
 
 #endif //SPACEINVADERS_CANNON_H
