@@ -36,6 +36,15 @@ public:
         mScreen.y = y;
     }
 
+    bool Collided(Sprite &sprite){
+        if(this->X() >= sprite.X() && this->X() <= sprite.X() + sprite.W()){
+            if((this->Y() + this->H()) >= sprite.Y()){
+                return true;
+            }
+        }
+        return false;
+    }
+
 private:
     std::vector<Rect> mAnimations;
     Rect mScreen;

@@ -11,11 +11,13 @@
 #include "GameState.h"
 #include "Controller.h"
 #include "Cannon.h"
+#include "Renderer.h"
+
 
 class Game {
 public:
     Game(int windowWidth, int windowHeight, int windowOffset);
-    void Run(int delayBetweenFramesMs, Controller&, void renderFunc());
+    void Run(int delayBetweenFramesMs, Controller&, std::function<void()> renderFunc);
 
     struct Asset{
         std::string name;
@@ -25,26 +27,16 @@ public:
         bool destroyed;
     };
 
-    void Start();
-    bool IsRunning(){return running;}
+    std::unique_ptr<Cannon> mCannon;
     bool IsFiring(){return firing;}
     int Score(){return score;}
-    Asset Ship;
     Asset Projectile;
     Asset Enemy;
-
-    void MoveRight();
-
-    void MoveLeft();
-
-    void Fire();
 
     void Update();
 
 private:
     GameStateManager mGameStateManager;
-    std::unique_ptr<Cannon> mCannon;
-    bool running;
     int score;
     int mWindowWidth, mWindowHeight, mWindowOffset;
     const int moveShipBy = 2;

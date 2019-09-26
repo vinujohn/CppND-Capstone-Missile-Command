@@ -11,6 +11,9 @@
 #include <vector>
 #include "Game.h"
 
+//TODO remove this
+class Game;
+
 class Renderer {
 private:
     SDL_Window *mWindow;

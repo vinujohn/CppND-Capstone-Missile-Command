@@ -10,8 +10,10 @@
 
 class Cannon : public Sprite {
 public:
-    Cannon(std::vector<Rect> cannonAnimations, std::vector<Rect> projectileAnimations) : Sprite(cannonAnimations){
+    Cannon(int windowWidth, std::vector<Rect> cannonAnimations, std::vector<Rect> projectileAnimations)
+        : Sprite(cannonAnimations){
         mProjectile = std::unique_ptr<Sprite>(new Sprite(projectileAnimations));
+        mWindowWidth = windowWidth;
     }
 
     void Fire(){
@@ -32,13 +34,17 @@ public:
     };
 
     void MoveRight(){
-        //TODO: figure out how to get window width here
+        int moveX = this->X() + mMoveCannonBy;
+        if(moveX < mWindowWidth - this->W()){
+            this->Move(moveX, this->Y());
+        }
     };
 
 private:
     std::unique_ptr<Sprite> mProjectile;
+    int mWindowWidth;
     bool mFiring;
-    static constexpr int mMoveCannonBy = 2;
+    static constexpr int mMoveCannonBy = 5;
 };
 
 #endif //SPACEINVADERS_CANNON_H

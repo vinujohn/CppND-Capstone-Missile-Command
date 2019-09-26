@@ -12,39 +12,14 @@ Game::Game(int windowWidth, int windowHeight, int windowOffset) {
     mWindowHeight = windowHeight;
     mWindowOffset = windowOffset;
 
-    mCannon = std::unique_ptr<Cannon>(new Cannon(std::vector<Rect>{{20, 42, 20, 18}},
+    // TODO remove this to the outside
+    mCannon = std::unique_ptr<Cannon>(new Cannon(windowWidth, std::vector<Rect>{{20, 42, 20, 18}},
             std::vector<Rect>{{20, 60, 20, 14}}));
 
     firing = false;
     score = 0;
 }
 
-void Game::Start() {
-    running = true;
-    Ship = Asset{"ship", mWindowWidth / 2, mWindowHeight - mWindowOffset};
-    Enemy = Asset{"enemy", mWindowOffset, mWindowHeight / 5};
-    Enemy.movingLeft = false;
-}
-
-void Game::MoveRight() {
-    if(Ship.x < (mWindowWidth - mWindowOffset)){
-        Ship.x += moveShipBy;
-    }
-}
-
-void Game::MoveLeft() {
-    if(Ship.x > 0){
-        Ship.x -= moveShipBy;
-    }
-}
-
-void Game::Fire() {
-    if(!IsFiring()){
-        std::cout << "firing..." << std::endl;
-        firing = true;
-        Projectile = Asset{"projectile", Ship.x + 8, Ship.y-1}; //TODO don't hardcode
-    }
-}
 
 void Game::Update() {
     auto now = SDL_GetTicks();
@@ -84,9 +59,9 @@ void Game::Update() {
     }
 }
 
-void Game::Run(int delayBetweenFramesMs, Controller &controller, void renderFunc()) {
+void Game::Run(int delayBetweenFramesMs, Controller &controller, std::function<void()> renderFunc) {
     Uint32 frameStart, frameTime;
-    mGameStateManager.SetState(GameState::Running);
+    mGameStateManager.SetState(GameState::Started);
 
     while(mGameStateManager.CurrentGameState() != GameState::Ended){
 
@@ -98,6 +73,12 @@ void Game::Run(int delayBetweenFramesMs, Controller &controller, void renderFunc
         renderFunc(); //TODO temporary
 
         switch(mGameStateManager.CurrentGameState()){
+            case GameState :: Started:
+                Enemy = Asset{"enemy", mWindowOffset, mWindowHeight / 5};
+                Enemy.movingLeft = false;
+                mCannon -> Move(mWindowWidth/2, mWindowHeight - mCannon->H());
+                mGameStateManager.SetState((GameState::Running));
+                break;
             case GameState :: Ending:
                 mGameStateManager.SetState(GameState::Ended);
                 break;

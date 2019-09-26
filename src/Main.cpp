@@ -1,5 +1,6 @@
 #include "SDL.h"
 #include "Renderer.h"
+#include "KeyboardController.h"
 #include <iostream>
 #include <vector>
 
@@ -35,39 +36,13 @@ int main() {
 
 
     Game g(windowWidth, windowHeight, windowOffset);
-    g.Start();
-
-    bool isquit = false;
-    SDL_Event event;
-    while (!isquit) {
-        if (SDL_PollEvent(&event)) {
-            if (event.type == SDL_QUIT) {
-                isquit = true;
-            }
-        }
-
-        const Uint8* currentKeyStates = SDL_GetKeyboardState( nullptr );
-
-        frameStart = SDL_GetTicks();
-        if(currentKeyStates[SDL_SCANCODE_RIGHT]){
-            g.MoveRight();
-        }
-        if(currentKeyStates[SDL_SCANCODE_LEFT]){
-            g.MoveLeft();
-        }
-        if(currentKeyStates[SDL_SCANCODE_SPACE]){
-            g.Fire();
-        }
-        g.Update();
+    auto kc = KeyboardController();
+    auto lambda = [&](){
         r.Render(g);
-
-        frameTime = SDL_GetTicks() - frameStart;
-        if(frameTime < DELAY_TIME)
-        {
-            SDL_Delay((int)(DELAY_TIME - frameTime));
-        }
-    }
+    };
+    g.Run(DELAY_TIME, kc, lambda);
 
     std::cout << "Bye" << std::endl;
     return 0;
 }
+

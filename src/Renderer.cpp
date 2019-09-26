@@ -138,7 +138,7 @@ void Renderer::Render(Game &g) {
 
     SDL_RenderCopy(mRenderer, mBackground, nullptr, nullptr);
 
-    auto d = SDL_Rect{g.Ship.x, g.Ship.y, mShipSprite.w, mShipSprite.h};
+    auto d = SDL_Rect{g.mCannon->X(), g.mCannon->Y(), g.mCannon->W(), g.mCannon->H()};
     //std::cout << "Ship x: " << g.Ship.x << " y: " << g.Ship.y << std::endl;
     SDL_RenderCopy(mRenderer, mSpriteSheetTexture, &mShipSprite, &d);
 
