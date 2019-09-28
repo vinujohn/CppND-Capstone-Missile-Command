@@ -118,16 +118,6 @@ void Renderer::Render(Game &g) {
         }
     }
 
-    if(!g.Enemy.destroyed){
-        auto e = SDL_Rect{g.Enemy.x, g.Enemy.y, mEnemySprites[g.Enemy.currentFrame].w, mEnemySprites[g.Enemy.currentFrame].h};
-        auto temp = mEnemySprites[g.Enemy.currentFrame];
-        SDL_RenderCopy(mRenderer, mSpriteSheetTexture, &temp, &e);
-    }else{
-        auto e = SDL_Rect{g.Enemy.x, g.Enemy.y, mExplosionSprite.w, mExplosionSprite.h};
-        auto temp = mEnemySprites[g.Enemy.currentFrame];
-        SDL_RenderCopy(mRenderer, mSpriteSheetTexture, &mExplosionSprite, &e);
-    }
-
     SDL_RenderPresent(mRenderer);
 
     std::string score = "Space Invaders - Score: " + std::to_string(g.Score());

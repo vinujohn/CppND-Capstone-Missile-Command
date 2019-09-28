@@ -12,26 +12,18 @@
 #include "Controller.h"
 #include "Cannon.h"
 #include "Renderer.h"
-
+#include "Invader.h"
 
 class Game {
 public:
     Game(int windowWidth, int windowHeight, int windowOffset);
     void Run(int delayBetweenFramesMs, Controller&, std::function<void()> renderFunc);
 
-    struct Asset{
-        std::string name;
-        int x, y, w, h;
-        int currentFrame;
-        bool movingLeft;
-        bool destroyed;
-    };
-
     std::shared_ptr<Cannon> mCannon;
     std::shared_ptr<Sprite> mProjectile;
+    std::shared_ptr<Invader> mEnemy;
 
     int Score(){return score;}
-    Asset Enemy;
 
     void Update();
     std::vector<std::shared_ptr<Sprite>> Sprites(){

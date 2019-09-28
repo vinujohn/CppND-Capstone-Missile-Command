@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include <SDL_timer.h>
+#include "Invader.h"
 #include "Game.h"
 
 // TODO figure out how to initialize mCannon cleanly
@@ -15,10 +16,13 @@ Game::Game(int windowWidth, int windowHeight, int windowOffset) {
     // TODO remove this to the outside
     mProjectile = std::shared_ptr<Sprite>(new Sprite(std::vector<Rect>{{20, 60, 20, 14}}));
     mCannon = std::shared_ptr<Cannon>(new Cannon(windowWidth, std::vector<Rect>{{20, 42, 20, 18}}, mProjectile));
+    mEnemy = std::shared_ptr<Invader>(new Invader(std::vector<Rect>{{0, 0, 20, 14},{20, 0, 20, 14},{0, 58, 20, 14}}, 0));
 
     mCannon->Display();
+    mEnemy->Display();
     mSpriteList.push_back(mCannon);
     mSpriteList.push_back(mProjectile);
+    mSpriteList.push_back(mEnemy);
 
     score = 0;
 }
@@ -26,20 +30,20 @@ Game::Game(int windowWidth, int windowHeight, int windowOffset) {
 
 void Game::Update() {
     auto now = SDL_GetTicks();
-    if(now - mframeStart > enemyAnimationMs){ //TODO: get rid of SDL here
-        Enemy.currentFrame = (Enemy.currentFrame + 1) % 2;
+    if(now - mframeStart > enemyAnimationMs){
         mframeStart = now;
-        if(!Enemy.destroyed) {
-            if (Enemy.movingLeft == false && Enemy.x + 20 < (mWindowWidth - mWindowOffset)) {
-                Enemy.x = Enemy.x + 20;
-            } else if (Enemy.movingLeft == false) {
-                Enemy.y += 14;
-                Enemy.movingLeft = true;
-            } else if (Enemy.movingLeft && Enemy.x - 20 > 0) {
-                Enemy.x -= 20;
+        if(!mEnemy->mDestroyed) {
+            mEnemy->Animate();
+            if (mEnemy -> mMovingLeft == false && mEnemy->X() + 20 < (mWindowWidth - mWindowOffset)) {
+                mEnemy->Move(mEnemy->X() + 20, mEnemy->Y());
+            } else if (mEnemy->mMovingLeft == false) {
+                mEnemy->Move(mEnemy->X(), mEnemy->Y() + 14);
+                mEnemy->mMovingLeft = true;
+            } else if (mEnemy->mMovingLeft && mEnemy->X() - 20 > 0) {
+                mEnemy->Move(mEnemy->X() - 20, mEnemy->Y());
             } else {
-                Enemy.y += 14;
-                Enemy.movingLeft = false;
+                mEnemy->Move(mEnemy->X(), mEnemy->Y() + 14);
+                mEnemy->mMovingLeft = false;
             }
         }
     }
@@ -53,12 +57,13 @@ void Game::Update() {
       }
 
       // hit enemy
-      if(!Enemy.destroyed && mProjectile->X() >= Enemy.x && mProjectile->X() <= Enemy.x + 20) { //TODO don't hard code
-        if(mProjectile->Y() <= Enemy.y + 14){
+      if(!mEnemy->mDestroyed && mProjectile->X() >= mEnemy->X() && mProjectile->X() <= mEnemy->X() + 20) { //TODO don't hard code
+        if(mProjectile->Y() <= mEnemy->Y() + 14){
             std::cout << "HIT!" << std::endl;
-            Enemy.destroyed = true;
+            mEnemy->mDestroyed = true;
             score += 10;
             mProjectile->Hide();
+            mEnemy->Destroy();
         }
       }
     }
@@ -80,8 +85,7 @@ void Game::Run(int delayBetweenFramesMs, Controller &controller, std::function<v
 
         switch(mGameStateManager.CurrentGameState()){
             case GameState :: Started:
-                Enemy = Asset{"enemy", mWindowOffset, mWindowHeight / 5};
-                Enemy.movingLeft = false;
+                mEnemy -> Move(mEnemy->W(), mWindowHeight / 5);
                 mCannon -> Move(mWindowWidth/2, mWindowHeight - mCannon->H());
                 mGameStateManager.SetState((GameState::Running));
                 break;

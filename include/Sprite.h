@@ -23,12 +23,13 @@ public:
     void Display(){mDisplayed = true;}
     bool Displayed(){return mDisplayed;}
 
-    int X(){return mScreen.x;}
-    int Y(){return mScreen.y;}
-    int W(){return mScreen.w;}
-    int H(){return mScreen.h;}
+    const int X(){return mScreen.x;}
+    const int Y(){return mScreen.y;}
+    const int W(){return mScreen.w;}
+    const int H(){return mScreen.h;}
 
     void SetAnimationIndex(int index){ mCurrentAnimationIndex = index;}
+    int GetAnimationIndex(){return mCurrentAnimationIndex;}
     const Rect GetCurrentAnimation(){return mAnimations[mCurrentAnimationIndex];}
 
     void Move(int x, int y){
