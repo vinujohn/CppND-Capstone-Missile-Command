@@ -29,7 +29,7 @@ public:
     int H(){return mScreen.h;}
 
     void SetAnimationIndex(int index){ mCurrentAnimationIndex = index;}
-    const Rect GetAnimation(){return mAnimations[mCurrentAnimationIndex];}
+    const Rect GetCurrentAnimation(){return mAnimations[mCurrentAnimationIndex];}
 
     void Move(int x, int y){
         mScreen.x = x;
@@ -51,5 +51,6 @@ private:
     bool mDisplayed;
     int mCurrentAnimationIndex;
 };
+
 
 #endif //SPACEINVADERS_SPRITE_H

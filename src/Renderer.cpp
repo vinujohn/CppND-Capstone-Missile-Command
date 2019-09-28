@@ -138,13 +138,13 @@ void Renderer::Render(Game &g) {
 
     SDL_RenderCopy(mRenderer, mBackground, nullptr, nullptr);
 
-    auto d = SDL_Rect{g.mCannon->X(), g.mCannon->Y(), g.mCannon->W(), g.mCannon->H()};
-    //std::cout << "Ship x: " << g.Ship.x << " y: " << g.Ship.y << std::endl;
-    SDL_RenderCopy(mRenderer, mSpriteSheetTexture, &mShipSprite, &d);
-
-    if(g.IsFiring()){
-        auto p = SDL_Rect{g.Projectile.x, g.Projectile.y, mProjectileSprite.w, mProjectileSprite.h};
-        SDL_RenderCopy(mRenderer, mSpriteSheetTexture, &mProjectileSprite, &p);
+    for(auto s : g.Sprites()){
+        if(s->Displayed()) {
+            auto a = s->GetCurrentAnimation();
+            auto src = SDL_Rect{a.x, a.y, a.w, a.h};
+            auto dst = SDL_Rect{s->X(), s->Y(), s->W(), s->H()};
+            SDL_RenderCopy(mRenderer, mSpriteSheetTexture, &src, &dst);
+        }
     }
 
     if(!g.Enemy.destroyed){

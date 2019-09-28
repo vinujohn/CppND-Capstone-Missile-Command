@@ -27,20 +27,23 @@ public:
         bool destroyed;
     };
 
-    std::unique_ptr<Cannon> mCannon;
-    bool IsFiring(){return firing;}
+    std::shared_ptr<Cannon> mCannon;
+    std::shared_ptr<Sprite> mProjectile;
+
     int Score(){return score;}
-    Asset Projectile;
     Asset Enemy;
 
     void Update();
+    std::vector<std::shared_ptr<Sprite>> Sprites(){
+        return mSpriteList;
+    }
 
 private:
-    GameStateManager mGameStateManager;
+    GameStateManager mGameStateManager; //todo change to unique ptr
+    std::vector<std::shared_ptr<Sprite>> mSpriteList;
     int score;
     int mWindowWidth, mWindowHeight, mWindowOffset;
-    const int moveShipBy = 2;
-    bool firing;
+
     int enemyAnimationMs = 500;
     Uint32 mframeStart;
 };

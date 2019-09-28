@@ -13,10 +13,13 @@ Game::Game(int windowWidth, int windowHeight, int windowOffset) {
     mWindowOffset = windowOffset;
 
     // TODO remove this to the outside
-    mCannon = std::unique_ptr<Cannon>(new Cannon(windowWidth, std::vector<Rect>{{20, 42, 20, 18}},
-            std::vector<Rect>{{20, 60, 20, 14}}));
+    mProjectile = std::shared_ptr<Sprite>(new Sprite(std::vector<Rect>{{20, 60, 20, 14}}));
+    mCannon = std::shared_ptr<Cannon>(new Cannon(windowWidth, std::vector<Rect>{{20, 42, 20, 18}}, mProjectile));
 
-    firing = false;
+    mCannon->Display();
+    mSpriteList.push_back(mCannon);
+    mSpriteList.push_back(mProjectile);
+
     score = 0;
 }
 
@@ -41,22 +44,25 @@ void Game::Update() {
         }
     }
 
-    if(IsFiring()){
-        Projectile.y -= 5;
-        if(Projectile.y <= 0){
-            firing=false;
-            Projectile.y = -1;
-        }
+    if(mProjectile->Displayed()) {
+      mProjectile->Move(mProjectile->X(), mProjectile->Y() - 5);
 
+      // went off screen
+      if(mProjectile->Y() <= 0){
+        mProjectile->Hide();
+      }
 
-        if(!Enemy.destroyed && Projectile.x >= Enemy.x && Projectile.x <= Enemy.x + 20) { //TODO don't hard code
-            if(Projectile.y <= Enemy.y + 14){
-                std::cout << "HIT!" << std::endl;
-                Enemy.destroyed = true;
-                score += 10;
-            }
+      // hit enemy
+      if(!Enemy.destroyed && mProjectile->X() >= Enemy.x && mProjectile->X() <= Enemy.x + 20) { //TODO don't hard code
+        if(mProjectile->Y() <= Enemy.y + 14){
+            std::cout << "HIT!" << std::endl;
+            Enemy.destroyed = true;
+            score += 10;
+            mProjectile->Hide();
         }
+      }
     }
+
 }
 
 void Game::Run(int delayBetweenFramesMs, Controller &controller, std::function<void()> renderFunc) {

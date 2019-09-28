@@ -10,19 +10,18 @@
 
 class Cannon : public Sprite {
 public:
-    Cannon(int windowWidth, std::vector<Rect> cannonAnimations, std::vector<Rect> projectileAnimations)
+    Cannon(int windowWidth, std::vector<Rect> cannonAnimations, std::shared_ptr<Sprite> projectile)
         : Sprite(cannonAnimations){
-        mProjectile = std::unique_ptr<Sprite>(new Sprite(projectileAnimations));
+        mProjectile = projectile;
         mWindowWidth = windowWidth;
     }
 
     void Fire(){
-        if(!mFiring){
-            int x = (this->X() + this->W()) / 2;
+        if(!mProjectile->Displayed()){
+            int x = this->X() - 3 + (this->W() / 2);
             int y = this->Y() - 1;
             mProjectile->Move(x, y);
             mProjectile->Display();
-            mFiring = true;
         }
     };
 
@@ -41,9 +40,8 @@ public:
     };
 
 private:
-    std::unique_ptr<Sprite> mProjectile;
+    std::shared_ptr<Sprite> mProjectile;
     int mWindowWidth;
-    bool mFiring;
     static constexpr int mMoveCannonBy = 2;
 };
 
