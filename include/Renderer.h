@@ -21,16 +21,11 @@ private:
     SDL_Texture *mBackground;
     SDL_Texture *mSpriteSheetTexture;
     std::vector<SDL_Rect> mEnemySprites;
-    SDL_Rect mShipSprite;
     SDL_Rect mExplosionSprite;
-    SDL_Rect *mBombSprite;
-    SDL_Rect mProjectileSprite;
 
     int mWindowWidth, mWindowHeight;
 
     void ThrowIfError(bool isError, const std::string &errMsg);
-
-    void RenderTexture(SDL_Texture *texture, int x, int y, int w, int h);
 
     void Cleanup();
 

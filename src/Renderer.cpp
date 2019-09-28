@@ -84,12 +84,6 @@ void Renderer::Cleanup() {
     SDL_Quit();
 }
 
-void Renderer::RenderTexture(SDL_Texture *texture, int x, int y, int w, int h) {
-    SDL_Rect dst;
-    dst.x = x, dst.y = y, dst.w = w, dst.h = h;
-    SDL_RenderCopy(mRenderer, texture, nullptr, &dst);
-}
-
 void Renderer::LoadSprites(
         const std::string &filePath,
         const std::vector<SpriteAsset>& enemies,
@@ -103,34 +97,11 @@ void Renderer::LoadSprites(
             mSpriteSheetTexture == nullptr,
             "could not load texture for sprites");
 
-    mShipSprite = SDL_Rect{ship.x, ship.y, ship.w, ship.h};
-    mProjectileSprite = SDL_Rect{projectile.x, projectile.y, projectile.w, projectile.h};
     mExplosionSprite = SDL_Rect{explosion.x, explosion.y, explosion.w, explosion.h};
 
     for(int i = 0; i < enemies.size(); i++){
         mEnemySprites.push_back(SDL_Rect{enemies[i].x, enemies[i].y, enemies[i].w, enemies[i].h});
     }
-
-
-/*
-    auto r = SDL_Rect{ship.x, ship.y, ship.w, ship.h};
-    auto d = SDL_Rect{30, 0, ship.w, ship.h};
-    SDL_RenderCopy(mRenderer, mSpriteSheetTexture, &r, &d);
-
-    auto r2 = SDL_Rect{explosion.x, explosion.y, explosion.w, explosion.h};
-    auto d2 = SDL_Rect{60, 0, explosion.w, explosion.h};
-    SDL_RenderCopy(mRenderer, mSpriteSheetTexture, &r2, &d2);
-
-    auto r3 = SDL_Rect{projectile.x, projectile.y, projectile.w, projectile.h};
-    auto d3 = SDL_Rect{90, 0, projectile.w, projectile.h};
-    SDL_RenderCopy(mRenderer, mSpriteSheetTexture, &r3, &d3);
-
-    auto r4 = SDL_Rect{bomb.x, bomb.y, bomb.w, bomb.h};
-    auto d4 = SDL_Rect{120, 0, bomb.w, bomb.h};
-    SDL_RenderCopy(mRenderer, mSpriteSheetTexture, &r4, &d4);
-
-    SDL_RenderPresent(mRenderer);
-    */
 }
 
 void Renderer::Render(Game &g) {
