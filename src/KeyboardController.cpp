@@ -18,14 +18,11 @@ void KeyboardController::HandleInput(GameStateManager &stateManager, Cannon &can
 
     if(currentKeyStates[SDL_SCANCODE_RIGHT]){
         cannon.MoveRight();
-        return;
     }
     if(currentKeyStates[SDL_SCANCODE_LEFT]){
         cannon.MoveLeft();
-        return;
     }
     if(currentKeyStates[SDL_SCANCODE_SPACE]){
         cannon.Fire();
-        return;
     }
 }
