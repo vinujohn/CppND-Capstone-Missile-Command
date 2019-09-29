@@ -6,6 +6,7 @@
 #include <SDL_timer.h>
 #include "Invader.h"
 #include "Game.h"
+#include "InvaderList.h"
 
 // TODO figure out how to initialize mCannon cleanly
 Game::Game(int windowWidth, int windowHeight, int windowOffset) {
@@ -28,10 +29,9 @@ Game::Game(int windowWidth, int windowHeight, int windowOffset) {
 }
 
 
-void Game::Update() {
-    auto now = SDL_GetTicks();
-    if(now - mframeStart > enemyAnimationMs){
-        mframeStart = now;
+void Game::Update(int referenceTicks) {
+    if(referenceTicks - mframeStart > enemyAnimationMs){
+        mframeStart = referenceTicks;
         if(!mEnemy->mDestroyed) {
             mEnemy->Animate();
             if (mEnemy -> mMovingLeft == false && mEnemy->X() + 20 < (mWindowWidth - mWindowOffset)) {
@@ -80,7 +80,7 @@ void Game::Run(int delayBetweenFramesMs, Controller &controller, std::function<v
 
         // game loop
         controller.HandleInput(mGameStateManager, *mCannon);
-        Update();
+        Update(frameStart);
         renderFunc(); //TODO temporary
 
         switch(mGameStateManager.CurrentGameState()){

@@ -25,7 +25,7 @@ public:
 
     int Score(){return score;}
 
-    void Update();
+    void Update(int referenceTicks);
     std::vector<std::shared_ptr<Sprite>> Sprites(){
         return mSpriteList;
     }
@@ -37,7 +37,7 @@ private:
     int mWindowWidth, mWindowHeight, mWindowOffset;
 
     int enemyAnimationMs = 500;
-    Uint32 mframeStart;
+    int mframeStart;
 };
 
 #endif //SPACEINVADERS_GAME_H
