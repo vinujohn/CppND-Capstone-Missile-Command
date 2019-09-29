@@ -13,15 +13,12 @@
 #include "Cannon.h"
 #include "Renderer.h"
 #include "Invader.h"
+#include "InvaderList.h"
 
 class Game {
 public:
     Game(int windowWidth, int windowHeight, int windowOffset);
     void Run(int delayBetweenFramesMs, Controller&, std::function<void()> renderFunc);
-
-    std::shared_ptr<Cannon> mCannon;
-    std::shared_ptr<Sprite> mProjectile;
-    std::shared_ptr<Invader> mEnemy;
 
     int Score(){return score;}
 
@@ -32,12 +29,15 @@ public:
 
 private:
     GameStateManager mGameStateManager; //todo change to unique ptr
+    
     std::vector<std::shared_ptr<Sprite>> mSpriteList;
+    std::shared_ptr<Cannon> mCannon;
+    std::shared_ptr<Sprite> mProjectile;
+    std::shared_ptr<Invader> mEnemy;
+    InvaderList mInvaderList;
+
     int score;
     int mWindowWidth, mWindowHeight, mWindowOffset;
-
-    int enemyAnimationMs = 500;
-    int mframeStart;
 };
 
 #endif //SPACEINVADERS_GAME_H

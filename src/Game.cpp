@@ -9,7 +9,7 @@
 #include "InvaderList.h"
 
 // TODO figure out how to initialize mCannon cleanly
-Game::Game(int windowWidth, int windowHeight, int windowOffset) {
+Game::Game(int windowWidth, int windowHeight, int windowOffset) :mInvaderList(500, windowOffset, windowWidth - windowOffset){
     mWindowWidth = windowWidth;
     mWindowHeight = windowHeight;
     mWindowOffset = windowOffset;
@@ -23,30 +23,17 @@ Game::Game(int windowWidth, int windowHeight, int windowOffset) {
     mEnemy->Display();
     mSpriteList.push_back(mCannon);
     mSpriteList.push_back(mProjectile);
-    mSpriteList.push_back(mEnemy);
+    //mSpriteList.push_back(mEnemy);
+
+    mInvaderList.push_back(mEnemy);
+    mSpriteList.insert(mSpriteList.end(), mInvaderList.begin(), mInvaderList.end());
 
     score = 0;
 }
 
 
 void Game::Update(int referenceTicks) {
-    if(referenceTicks - mframeStart > enemyAnimationMs){
-        mframeStart = referenceTicks;
-        if(!mEnemy->mDestroyed) {
-            mEnemy->Animate();
-            if (mEnemy -> mMovingLeft == false && mEnemy->X() + 20 < (mWindowWidth - mWindowOffset)) {
-                mEnemy->Move(mEnemy->X() + 20, mEnemy->Y());
-            } else if (mEnemy->mMovingLeft == false) {
-                mEnemy->Move(mEnemy->X(), mEnemy->Y() + 14);
-                mEnemy->mMovingLeft = true;
-            } else if (mEnemy->mMovingLeft && mEnemy->X() - 20 > 0) {
-                mEnemy->Move(mEnemy->X() - 20, mEnemy->Y());
-            } else {
-                mEnemy->Move(mEnemy->X(), mEnemy->Y() + 14);
-                mEnemy->mMovingLeft = false;
-            }
-        }
-    }
+    mInvaderList.Update(referenceTicks);
 
     if(mProjectile->Displayed()) {
       mProjectile->Move(mProjectile->X(), mProjectile->Y() - 5);
@@ -57,10 +44,9 @@ void Game::Update(int referenceTicks) {
       }
 
       // hit enemy
-      if(!mEnemy->mDestroyed && mProjectile->X() >= mEnemy->X() && mProjectile->X() <= mEnemy->X() + 20) { //TODO don't hard code
+      if(!mEnemy->Destroyed() && mProjectile->X() >= mEnemy->X() && mProjectile->X() <= mEnemy->X() + 20) { //TODO don't hard code
         if(mProjectile->Y() <= mEnemy->Y() + 14){
             std::cout << "HIT!" << std::endl;
-            mEnemy->mDestroyed = true;
             score += 10;
             mProjectile->Hide();
             mEnemy->Destroy();

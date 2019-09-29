@@ -9,7 +9,7 @@
 
 class Invader : public Sprite{
 public:
-    Invader(std::vector<Rect> animations, int startAnimationIndex) : Sprite(animations){
+    Invader(std::vector<Rect> animations, int startAnimationIndex) : mDestroyed(false), Sprite(animations){
         SetAnimationIndex(startAnimationIndex);
     }
 
@@ -22,8 +22,37 @@ public:
         mDestroyed = true;
     }
 
-    // TODO remove this later
-    bool mMovingLeft = false;
+    bool Destroyed(){
+        return mDestroyed;
+    }
+
+    bool CanMoveRight(int bound){
+        if(X() + W() <= bound){
+            return true;
+        }
+        return false;
+    }
+
+    void MoveRight(){
+        Move(X() + W(),Y());
+    };
+
+    bool CanMoveLeft(int bound){
+        if(X() - W() >= bound){
+            return true;
+        }
+        return false;
+    }
+
+    void MoveLeft(){
+        Move(X() - W(), Y());
+    }
+
+    void MoveDown(){
+        Move(X(), Y() + H());
+    }
+
+private:
     bool mDestroyed = false;
 };
 
