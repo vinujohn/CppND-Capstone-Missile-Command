@@ -27,7 +27,7 @@ public:
     }
 
     bool CanMoveRight(int bound){
-        if(X() + W() <= bound){
+        if(X() + W() < bound){
             return true;
         }
         return false;

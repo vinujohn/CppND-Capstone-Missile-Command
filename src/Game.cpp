@@ -23,7 +23,6 @@ Game::Game(int windowWidth, int windowHeight, int windowOffset) :mInvaderList(50
     mEnemy->Display();
     mSpriteList.push_back(mCannon);
     mSpriteList.push_back(mProjectile);
-    //mSpriteList.push_back(mEnemy);
 
     mInvaderList.push_back(mEnemy);
     mSpriteList.insert(mSpriteList.end(), mInvaderList.begin(), mInvaderList.end());

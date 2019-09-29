@@ -18,18 +18,20 @@
 class Game {
 public:
     Game(int windowWidth, int windowHeight, int windowOffset);
+
     void Run(int delayBetweenFramesMs, Controller&, std::function<void()> renderFunc);
 
     int Score(){return score;}
 
     void Update(int referenceTicks);
-    std::vector<std::shared_ptr<Sprite>> Sprites(){
+
+    const std::vector<std::shared_ptr<Sprite>> Sprites(){
         return mSpriteList;
     }
 
 private:
     GameStateManager mGameStateManager; //todo change to unique ptr
-    
+
     std::vector<std::shared_ptr<Sprite>> mSpriteList;
     std::shared_ptr<Cannon> mCannon;
     std::shared_ptr<Sprite> mProjectile;
