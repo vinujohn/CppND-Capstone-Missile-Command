@@ -15,7 +15,7 @@ class Renderer {
 private:
     SDL_Window *mWindow;
     SDL_Renderer *mRenderer;
-    SDL_Texture *mBackground;
+    SDL_Texture *mBackgroundTexture;
     SDL_Texture *mSpriteSheetTexture;
 
     int mWindowWidth, mWindowHeight;
@@ -25,13 +25,10 @@ private:
     void Cleanup();
 
 public:
-    Renderer(int windowWidth, int windowHeight);
+    Renderer(int windowWidth, int windowHeight
+            , const std::string &backgroundFilePath, const std::string &spriteSheetFilePath);
 
     ~Renderer();
-
-    void LoadBackground(const std::string &filePath);
-
-    void LoadSpriteSheet(const std::string &filePath);
 
     void Render(std::vector<std::shared_ptr<Sprite>> &sprites);
 

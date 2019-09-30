@@ -13,15 +13,10 @@ int main() {
     const std::string spriteFile = "./assets/sprites.png";
     const int FPS = 60;
     const int DELAY_TIME = 1000.0f / FPS;
-    Uint32 frameStart, frameTime;
 
 
-    Renderer r(windowWidth, windowHeight);
+    Renderer r(windowWidth, windowHeight, bgFile, spriteFile);
 
-    r.LoadBackground(bgFile);
-
-    // Load sprites
-    r.LoadSpriteSheet(spriteFile);
     //auto bomb = Renderer::SpriteAsset{0, 69, 20, 14};
 
     Game g(windowWidth, windowHeight, windowOffset);

@@ -17,7 +17,8 @@ void Renderer::ThrowIfError(bool isError, const std::string &errMsg) {
     }
 }
 
-Renderer::Renderer(int windowWidth, int windowHeight)
+Renderer::Renderer(int windowWidth, int windowHeight
+        , const std::string &backgroundFilePath, const std::string &spriteFilePath)
     : mWindowWidth(windowWidth), mWindowHeight(windowHeight) {
     // initialize SDL
     ThrowIfError(
@@ -50,7 +51,15 @@ Renderer::Renderer(int windowWidth, int windowHeight)
             mRenderer == nullptr,
             "could not create renderer");
 
+    mBackgroundTexture = IMG_LoadTexture(mRenderer, backgroundFilePath.c_str());
+    ThrowIfError(
+            mBackgroundTexture == nullptr,
+            "could not load texture for background");
 
+    mSpriteSheetTexture = IMG_LoadTexture(mRenderer, spriteFilePath.c_str());
+    ThrowIfError(
+            mSpriteSheetTexture == nullptr,
+            "could not load texture for sprites");
 
     std::cout << "Renderer initialized" << std::endl;
 }
@@ -60,16 +69,9 @@ Renderer::~Renderer() {
     Cleanup();
 }
 
-void Renderer::LoadBackground(const std::string &filePath) {
-    mBackground = IMG_LoadTexture(mRenderer, filePath.c_str());
-    ThrowIfError(
-            mBackground == nullptr,
-            "could not load texture for background");
-}
-
 void Renderer::Cleanup() {
-    if(mBackground != nullptr){
-        SDL_DestroyTexture(mBackground);
+    if(mBackgroundTexture != nullptr){
+        SDL_DestroyTexture(mBackgroundTexture);
     }
     if(mSpriteSheetTexture != nullptr){
         SDL_DestroyTexture(mSpriteSheetTexture);
@@ -84,18 +86,10 @@ void Renderer::Cleanup() {
     SDL_Quit();
 }
 
-void Renderer::LoadSpriteSheet(const std::string &filePath) {
-
-    mSpriteSheetTexture = IMG_LoadTexture(mRenderer, filePath.c_str());
-    ThrowIfError(
-            mSpriteSheetTexture == nullptr,
-            "could not load texture for sprites");
-}
-
 void Renderer::Render(std::vector<std::shared_ptr<Sprite>> &sprites) {
     SDL_RenderClear(mRenderer);
 
-    SDL_RenderCopy(mRenderer, mBackground, nullptr, nullptr);
+    SDL_RenderCopy(mRenderer, mBackgroundTexture, nullptr, nullptr);
 
     for(auto s : sprites){
         if(s->Displayed()) {
