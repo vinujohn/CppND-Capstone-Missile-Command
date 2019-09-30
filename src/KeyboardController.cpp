@@ -9,7 +9,7 @@ void KeyboardController::HandleInput(GameStateManager &stateManager, Cannon &can
     SDL_Event e;
     if (SDL_PollEvent(&e)) {
         if (e.type == SDL_QUIT) {
-            stateManager.EndGame();
+            stateManager.ExitGame();
             return;
         }
     }

@@ -42,6 +42,15 @@ void InvaderList::Move() {
     }
 }
 
+bool InvaderList::Landed(){
+    for(auto &inv : *this){
+        if(!inv->CanMoveDown(mLowerBound)){
+            return true;
+        }
+    }
+    return false;
+}
+
 void InvaderList::SetNextMove() {
 
     switch(mCurrentDirection){

@@ -14,7 +14,6 @@ int main() {
     const int FPS = 60;
     const int DELAY_TIME = 1000.0f / FPS;
 
-
     Renderer r(windowWidth, windowHeight, bgFile, spriteFile);
 
     //auto bomb = Renderer::SpriteAsset{0, 69, 20, 14};

@@ -14,17 +14,19 @@ public:
         Right, Left, Down
     };
 
-    InvaderList(int animationSpeedMs, int leftBound, int rightBound)
+    InvaderList(int animationSpeedMs, int leftBound, int rightBound, int lowerBound)
         :mCurrentDirection(Direction::Right), mNextDirectionAfterDown(Direction::Left)
         ,mFrameStart(0), mAnimateSpeedMs(animationSpeedMs)
-        ,mLeftBound(leftBound), mRightBound(rightBound){}
+        ,mLeftBound(leftBound), mRightBound(rightBound), mLowerBound(lowerBound){}
 
         void Update(int referenceTicks);
+
+        bool Landed();
 
 private:
     Direction mCurrentDirection;
     Direction mNextDirectionAfterDown;
-    int mLeftBound, mRightBound;
+    int mLeftBound, mRightBound, mLowerBound;
     int mAnimateSpeedMs;
     int mFrameStart;
 

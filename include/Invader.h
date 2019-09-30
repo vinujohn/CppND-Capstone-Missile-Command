@@ -53,6 +53,13 @@ public:
         Move(X(), Y() + H());
     }
 
+    bool CanMoveDown(int bound){
+        if(Y() + H() < bound){
+            return true;
+        }
+        return false;
+    }
+
 private:
     bool mDestroyed = false;
 };

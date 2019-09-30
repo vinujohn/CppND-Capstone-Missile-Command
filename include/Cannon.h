@@ -26,6 +26,10 @@ public:
     };
 
     void MoveLeft(){
+        if(mDestroyed){
+            return;
+        }
+
         int moveX = this->X() - mMoveCannonBy;
         if(moveX > 0){
             this->Move(moveX, this->Y());
@@ -33,16 +37,30 @@ public:
     };
 
     void MoveRight(){
+        if(mDestroyed){
+            return;
+        }
+
         int moveX = this->X() + mMoveCannonBy;
         if(moveX < mWindowWidth - this->W()){
             this->Move(moveX, this->Y());
         }
     };
 
+    void Destroy(){
+        SetAnimationIndex(1);
+        mDestroyed = true;
+    }
+
+    bool Destroyed(){
+        return mDestroyed;
+    }
+
 private:
     std::shared_ptr<Sprite> mProjectile;
     int mWindowWidth;
     static constexpr int mMoveCannonBy = 2;
+    bool mDestroyed;
 };
 
 #endif //SPACEINVADERS_CANNON_H

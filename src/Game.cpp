@@ -6,17 +6,16 @@
 #include <SDL_timer.h>
 #include "Invader.h"
 #include "Game.h"
-#include "InvaderList.h"
 
 // TODO figure out how to initialize mCannon cleanly
-Game::Game(int windowWidth, int windowHeight, int windowOffset) :mInvaderList(500, windowOffset, windowWidth - windowOffset){
+Game::Game(int windowWidth, int windowHeight, int windowOffset) :mInvaderList(500, windowOffset, windowWidth - windowOffset, windowHeight - windowOffset){
     mWindowWidth = windowWidth;
     mWindowHeight = windowHeight;
     mWindowOffset = windowOffset;
 
     // TODO remove this to the outside
     mProjectile = std::shared_ptr<Sprite>(new Sprite(std::vector<Rect>{{20, 60, 20, 14}}));
-    mCannon = std::shared_ptr<Cannon>(new Cannon(windowWidth, std::vector<Rect>{{20, 42, 20, 18}}, mProjectile));
+    mCannon = std::shared_ptr<Cannon>(new Cannon(windowWidth, std::vector<Rect>{{20, 42, 20, 18}, {0, 42, 20, 18}}, mProjectile));
     auto enemyAnimations = std::vector<std::vector<Rect>>{
         {
             {0, 0, 20, 14},
@@ -77,29 +76,32 @@ void Game::Update(int referenceTicks) {
       }
     }
 
+    if(mInvaderList.Landed()){
+        mCannon->Destroy();
+        mGameStateManager.EndGame();
+    }
 }
 
 void Game::Run(int delayBetweenFramesMs, Controller &controller, Renderer &renderer) {
     Uint32 frameStart, frameTime;
     mGameStateManager.SetState(GameState::Started);
 
-    while(mGameStateManager.CurrentGameState() != GameState::Ended){
+    while(mGameStateManager.CurrentGameState() != GameState::Exited){
 
         frameStart = SDL_GetTicks();
 
         // game loop
         controller.HandleInput(mGameStateManager, *mCannon);
-        Update(frameStart);
-        renderer.Render(mSpriteList);
-        renderer.UpdateScore(mScore);
 
         switch(mGameStateManager.CurrentGameState()){
             case GameState :: Started:
                 mCannon -> Move(mWindowWidth/2, mWindowHeight - mCannon->H());
                 mGameStateManager.SetState((GameState::Running));
                 break;
-            case GameState :: Ending:
-                mGameStateManager.SetState(GameState::Ended);
+            case GameState::Running:
+                Update(frameStart);
+                renderer.Render(mSpriteList);
+                renderer.UpdateScore(mScore);
                 break;
         }
 

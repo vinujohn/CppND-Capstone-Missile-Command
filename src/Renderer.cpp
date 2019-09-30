@@ -6,7 +6,6 @@
 #include "Renderer.h"
 #include "SDL.h"
 #include "SDL_image.h"
-#include <cmath>
 #include <vector>
 
 void Renderer::ThrowIfError(bool isError, const std::string &errMsg) {

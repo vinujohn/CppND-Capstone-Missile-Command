@@ -6,7 +6,7 @@
 #define SPACEINVADERS_GAMESTATE_H
 
 enum class GameState{
-    Loaded, Started, Running, Ending, Ended
+    Started, Running, Ended, Exited
 };
 
 class GameStateManager {
@@ -16,8 +16,12 @@ public:
         return mCurrentState;
     };
 
+    void ExitGame() {
+        mCurrentState = GameState::Exited;
+    };
+
     void EndGame() {
-        mCurrentState = GameState::Ending;
+        mCurrentState = GameState::Ended;
     };
 
     void SetState(GameState state){
