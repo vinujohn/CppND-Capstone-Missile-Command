@@ -6,6 +6,7 @@
 #define SPACEINVADERS_INVADER_H
 
 #include "Sprite.h"
+#include <iostream>
 
 class Invader : public Sprite{
 public:

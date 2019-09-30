@@ -17,14 +17,39 @@ Game::Game(int windowWidth, int windowHeight, int windowOffset) :mInvaderList(50
     // TODO remove this to the outside
     mProjectile = std::shared_ptr<Sprite>(new Sprite(std::vector<Rect>{{20, 60, 20, 14}}));
     mCannon = std::shared_ptr<Cannon>(new Cannon(windowWidth, std::vector<Rect>{{20, 42, 20, 18}}, mProjectile));
-    mEnemy = std::shared_ptr<Invader>(new Invader(std::vector<Rect>{{0, 0, 20, 14},{20, 0, 20, 14},{0, 58, 20, 14}}, 0));
+    auto enemyAnimations = std::vector<std::vector<Rect>>{
+        {
+            {0, 0, 20, 14},
+            {20, 0, 20, 14},
+            {0, 58, 20, 14}
+        },
+        {
+            {0, 14, 20, 14},
+            {20, 14, 20, 14},
+            {0, 58, 20, 14}
+        },
+        {
+            {0, 28, 20, 14},
+            {20, 28, 20, 14},
+            {0, 58, 20, 14}
+        }
+    };
+    auto numEnemiesPerRow = 5;
+    auto invaderY = windowHeight / 5;
+    for(int row = 0; row < enemyAnimations.size(); row++){
+        for(int col = 0; col < numEnemiesPerRow; col++){
+            auto invader =std::shared_ptr<Invader>(new Invader(enemyAnimations[row], col % 2));
+            invader->Move(invader->W() + (col*invader->W()), invaderY + (row*invader->H()));
+            invader->Display();
+            mInvaderList.push_back(invader);
+        }
+    }
 
     mCannon->Display();
-    mEnemy->Display();
+
     mSpriteList.push_back(mCannon);
     mSpriteList.push_back(mProjectile);
 
-    mInvaderList.push_back(mEnemy);
     mSpriteList.insert(mSpriteList.end(), mInvaderList.begin(), mInvaderList.end());
 
     score = 0;
@@ -42,14 +67,13 @@ void Game::Update(int referenceTicks) {
         mProjectile->Hide();
       }
 
-      // hit enemy
-      if(!mEnemy->Destroyed() && mProjectile->X() >= mEnemy->X() && mProjectile->X() <= mEnemy->X() + 20) { //TODO don't hard code
-        if(mProjectile->Y() <= mEnemy->Y() + 14){
-            std::cout << "HIT!" << std::endl;
-            score += 10;
-            mProjectile->Hide();
-            mEnemy->Destroy();
-        }
+      for(auto &inv:mInvaderList){
+          if(mProjectile->Collided(*inv)){
+              std::cout << "Hit!" << std::endl;
+              mProjectile->Hide();
+              inv->Destroy();
+              score += 10;
+          }
       }
     }
 
@@ -70,7 +94,6 @@ void Game::Run(int delayBetweenFramesMs, Controller &controller, std::function<v
 
         switch(mGameStateManager.CurrentGameState()){
             case GameState :: Started:
-                mEnemy -> Move(mEnemy->W(), mWindowHeight / 5);
                 mCannon -> Move(mWindowWidth/2, mWindowHeight - mCannon->H());
                 mGameStateManager.SetState((GameState::Running));
                 break;

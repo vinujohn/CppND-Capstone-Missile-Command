@@ -39,7 +39,7 @@ public:
 
     bool Collided(Sprite &sprite){
         if(this->X() >= sprite.X() && this->X() <= sprite.X() + sprite.W()){
-            if((this->Y() + this->H()) >= sprite.Y()){
+            if(this->Y() <= sprite.Y() && (this->Y() + this->H()) >= sprite.Y()){
                 return true;
             }
         }

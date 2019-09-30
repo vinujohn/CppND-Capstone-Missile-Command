@@ -35,7 +35,6 @@ private:
     std::vector<std::shared_ptr<Sprite>> mSpriteList;
     std::shared_ptr<Cannon> mCannon;
     std::shared_ptr<Sprite> mProjectile;
-    std::shared_ptr<Invader> mEnemy;
     InvaderList mInvaderList;
 
     int score;
