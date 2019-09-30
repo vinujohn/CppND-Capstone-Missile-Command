@@ -3,6 +3,7 @@
 #include "KeyboardController.h"
 #include <iostream>
 #include <vector>
+#include "Game.h"
 
 int main() {
     constexpr int windowWidth = 300;
@@ -20,27 +21,13 @@ int main() {
     r.LoadBackground(bgFile);
 
     // Load sprites
-    std::vector<Renderer::SpriteAsset> enemies;
-    enemies.push_back(Renderer::SpriteAsset{0, 0, 20, 14});
-    enemies.push_back(Renderer::SpriteAsset{20, 0, 20, 14});
-    enemies.push_back(Renderer::SpriteAsset{0, 14, 20, 14});
-    enemies.push_back(Renderer::SpriteAsset{20, 14, 20, 14});
-    enemies.push_back(Renderer::SpriteAsset{0, 28, 20, 14});
-    enemies.push_back(Renderer::SpriteAsset{20, 28, 20, 14});
-    auto ship = Renderer::SpriteAsset{20, 42, 20, 18};
-    auto explosion = Renderer::SpriteAsset{0, 58, 20, 14};
-    auto projectile = Renderer::SpriteAsset{20, 60, 20, 14};
-    auto bomb = Renderer::SpriteAsset{0, 69, 20, 14};
-
-    r.LoadSprites(spriteFile, enemies, ship, explosion, bomb, projectile);
-
+    r.LoadSpriteSheet(spriteFile);
+    //auto bomb = Renderer::SpriteAsset{0, 69, 20, 14};
 
     Game g(windowWidth, windowHeight, windowOffset);
     auto kc = KeyboardController();
-    auto lambda = [&](){
-        r.Render(g);
-    };
-    g.Run(DELAY_TIME, kc, lambda);
+
+    g.Run(DELAY_TIME, kc, r);
 
     std::cout << "Bye" << std::endl;
     return 0;

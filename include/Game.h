@@ -19,15 +19,9 @@ class Game {
 public:
     Game(int windowWidth, int windowHeight, int windowOffset);
 
-    void Run(int delayBetweenFramesMs, Controller&, std::function<void()> renderFunc);
-
-    int Score(){return score;}
+    void Run(int delayBetweenFramesMs, Controller&, Renderer&);
 
     void Update(int referenceTicks);
-
-    const std::vector<std::shared_ptr<Sprite>> Sprites(){
-        return mSpriteList;
-    }
 
 private:
     GameStateManager mGameStateManager; //todo change to unique ptr
@@ -37,7 +31,7 @@ private:
     std::shared_ptr<Sprite> mProjectile;
     InvaderList mInvaderList;
 
-    int score;
+    int mScore;
     int mWindowWidth, mWindowHeight, mWindowOffset;
 };
 

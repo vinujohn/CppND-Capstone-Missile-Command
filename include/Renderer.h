@@ -6,13 +6,10 @@
 #define SPACE_INVADERS_RENDERER_H
 
 #include "SDL.h"
+#include "Sprite.h"
 #include <memory>
 #include <string>
 #include <vector>
-#include "Game.h"
-
-//TODO remove this
-class Game;
 
 class Renderer {
 private:
@@ -20,8 +17,6 @@ private:
     SDL_Renderer *mRenderer;
     SDL_Texture *mBackground;
     SDL_Texture *mSpriteSheetTexture;
-    std::vector<SDL_Rect> mEnemySprites;
-    SDL_Rect mExplosionSprite;
 
     int mWindowWidth, mWindowHeight;
 
@@ -30,22 +25,17 @@ private:
     void Cleanup();
 
 public:
-    struct SpriteAsset{
-        int x,y,w,h;
-    };
-
     Renderer(int windowWidth, int windowHeight);
 
     ~Renderer();
 
     void LoadBackground(const std::string &filePath);
-    void LoadSprites(const std::string &filePath,
-                     const std::vector<SpriteAsset>& enemies,
-                     SpriteAsset ship,
-                     SpriteAsset explosion,
-                     SpriteAsset bomb,
-                     SpriteAsset projectile);
-    void Render(Game &g);
+
+    void LoadSpriteSheet(const std::string &filePath);
+
+    void Render(std::vector<std::shared_ptr<Sprite>> &sprites);
+
+    void UpdateScore(int score);
 };
 
 #endif //SPACE_INVADERS_RENDERER_H

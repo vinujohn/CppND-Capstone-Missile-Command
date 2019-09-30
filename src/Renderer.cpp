@@ -84,32 +84,20 @@ void Renderer::Cleanup() {
     SDL_Quit();
 }
 
-void Renderer::LoadSprites(
-        const std::string &filePath,
-        const std::vector<SpriteAsset>& enemies,
-        SpriteAsset ship,
-        SpriteAsset explosion,
-        SpriteAsset bomb,
-        SpriteAsset projectile) {
+void Renderer::LoadSpriteSheet(const std::string &filePath) {
 
     mSpriteSheetTexture = IMG_LoadTexture(mRenderer, filePath.c_str());
     ThrowIfError(
             mSpriteSheetTexture == nullptr,
             "could not load texture for sprites");
-
-    mExplosionSprite = SDL_Rect{explosion.x, explosion.y, explosion.w, explosion.h};
-
-    for(int i = 0; i < enemies.size(); i++){
-        mEnemySprites.push_back(SDL_Rect{enemies[i].x, enemies[i].y, enemies[i].w, enemies[i].h});
-    }
 }
 
-void Renderer::Render(Game &g) {
+void Renderer::Render(std::vector<std::shared_ptr<Sprite>> &sprites) {
     SDL_RenderClear(mRenderer);
 
     SDL_RenderCopy(mRenderer, mBackground, nullptr, nullptr);
 
-    for(auto s : g.Sprites()){
+    for(auto s : sprites){
         if(s->Displayed()) {
             auto a = s->GetCurrentAnimation();
             auto src = SDL_Rect{a.x, a.y, a.w, a.h};
@@ -119,8 +107,10 @@ void Renderer::Render(Game &g) {
     }
 
     SDL_RenderPresent(mRenderer);
+}
 
-    std::string score = "Space Invaders - Score: " + std::to_string(g.Score());
+void Renderer::UpdateScore(int score){
+    std::string scoreStr = "Space Invaders - Score: " + std::to_string(score);
 
-    SDL_SetWindowTitle(mWindow, score.c_str());
+    SDL_SetWindowTitle(mWindow, scoreStr.c_str());
 }

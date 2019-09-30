@@ -39,7 +39,7 @@ Game::Game(int windowWidth, int windowHeight, int windowOffset) :mInvaderList(50
     for(int row = 0; row < enemyAnimations.size(); row++){
         for(int col = 0; col < numEnemiesPerRow; col++){
             auto invader =std::shared_ptr<Invader>(new Invader(enemyAnimations[row], col % 2));
-            invader->Move(invader->W() + (col*invader->W()), invaderY + (row*invader->H()));
+            invader->Move(invader->W() + (2*col*invader->W()), invaderY + (2*row*invader->H()));
             invader->Display();
             mInvaderList.push_back(invader);
         }
@@ -52,7 +52,7 @@ Game::Game(int windowWidth, int windowHeight, int windowOffset) :mInvaderList(50
 
     mSpriteList.insert(mSpriteList.end(), mInvaderList.begin(), mInvaderList.end());
 
-    score = 0;
+    mScore = 0;
 }
 
 
@@ -72,14 +72,14 @@ void Game::Update(int referenceTicks) {
               std::cout << "Hit!" << std::endl;
               mProjectile->Hide();
               inv->Destroy();
-              score += 10;
+              mScore += 10;
           }
       }
     }
 
 }
 
-void Game::Run(int delayBetweenFramesMs, Controller &controller, std::function<void()> renderFunc) {
+void Game::Run(int delayBetweenFramesMs, Controller &controller, Renderer &renderer) {
     Uint32 frameStart, frameTime;
     mGameStateManager.SetState(GameState::Started);
 
@@ -90,7 +90,8 @@ void Game::Run(int delayBetweenFramesMs, Controller &controller, std::function<v
         // game loop
         controller.HandleInput(mGameStateManager, *mCannon);
         Update(frameStart);
-        renderFunc(); //TODO temporary
+        renderer.Render(mSpriteList);
+        renderer.UpdateScore(mScore);
 
         switch(mGameStateManager.CurrentGameState()){
             case GameState :: Started:
