@@ -2,6 +2,7 @@
 // Created by Vinu on 9/29/19.
 //
 #include "InvaderList.h"
+#include <random>
 
 void InvaderList::Update(int referenceTicks) {
     if (referenceTicks - mFrameStart > mAnimateSpeedMs) {
@@ -22,6 +23,8 @@ void InvaderList::Update(int referenceTicks) {
 
         SetNextMove();
         Move();
+
+        DropBomb();
     }
 }
 
@@ -80,4 +83,21 @@ void InvaderList::SetNextMove() {
             break;
     }
 
+}
+
+void InvaderList::IncreaseAnimationSpeed() {
+    mAnimateSpeedMs -= 20;
+}
+
+void InvaderList::DropBomb() {
+    if(!mBomb->Displayed()){
+        // choose random invader
+        std::uniform_int_distribution<int> dist(0, this->size() - 1);
+        auto randomInvader = (*this)[dist(mRandomEngine)];
+
+        int x = randomInvader->X() - 3 + (randomInvader->W() / 2);
+        int y = randomInvader->Y() + randomInvader->H();
+        mBomb->Move(x, y);
+        mBomb->Display();
+    }
 }

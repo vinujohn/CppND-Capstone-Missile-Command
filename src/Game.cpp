@@ -8,7 +8,7 @@
 #include "Game.h"
 
 // TODO figure out how to initialize mCannon cleanly
-Game::Game(int windowWidth, int windowHeight, int windowOffset) :mInvaderList(500, windowOffset, windowWidth - windowOffset, windowHeight - windowOffset){
+Game::Game(int windowWidth, int windowHeight, int windowOffset) {
     mWindowWidth = windowWidth;
     mWindowHeight = windowHeight;
     mWindowOffset = windowOffset;
@@ -16,6 +16,8 @@ Game::Game(int windowWidth, int windowHeight, int windowOffset) :mInvaderList(50
     // TODO remove this to the outside
     mProjectile = std::shared_ptr<Sprite>(new Sprite(std::vector<Rect>{{20, 60, 20, 14}}));
     mCannon = std::shared_ptr<Cannon>(new Cannon(windowWidth, std::vector<Rect>{{20, 42, 20, 18}, {0, 42, 20, 18}}, mProjectile));
+    mBomb = std::shared_ptr<Sprite>(new Sprite(std::vector<Rect>{{0, 69, 20, 14}}));
+    mInvaderList = std::shared_ptr<InvaderList>(new InvaderList(500, windowOffset, windowWidth - windowOffset, windowHeight - windowOffset, mBomb));
     auto enemyAnimations = std::vector<std::vector<Rect>>{
         {
             {0, 0, 20, 14},
@@ -40,7 +42,7 @@ Game::Game(int windowWidth, int windowHeight, int windowOffset) :mInvaderList(50
             auto invader =std::shared_ptr<Invader>(new Invader(enemyAnimations[row], col % 2));
             invader->Move(invader->W() + (2*col*invader->W()), invaderY + (2*row*invader->H()));
             invader->Display();
-            mInvaderList.push_back(invader);
+            mInvaderList->push_back(invader);
         }
     }
 
@@ -48,15 +50,15 @@ Game::Game(int windowWidth, int windowHeight, int windowOffset) :mInvaderList(50
 
     mSpriteList.push_back(mCannon);
     mSpriteList.push_back(mProjectile);
-
-    mSpriteList.insert(mSpriteList.end(), mInvaderList.begin(), mInvaderList.end());
+    mSpriteList.push_back(mBomb);
+    mSpriteList.insert(mSpriteList.end(), mInvaderList->begin(), mInvaderList->end());
 
     mScore = 0;
 }
 
 
 void Game::Update(int referenceTicks) {
-    mInvaderList.Update(referenceTicks);
+    mInvaderList->Update(referenceTicks);
 
     if(mProjectile->Displayed()) {
       mProjectile->Move(mProjectile->X(), mProjectile->Y() - 5);
@@ -64,21 +66,37 @@ void Game::Update(int referenceTicks) {
       // went off screen
       if(mProjectile->Y() <= 0){
         mProjectile->Hide();
-      }
-
-      for(auto &inv:mInvaderList){
-          if(mProjectile->Collided(*inv)){
-              std::cout << "Hit!" << std::endl;
-              mProjectile->Hide();
-              inv->Destroy();
-              mScore += 10;
+      }else{
+          for(auto &inv:*mInvaderList){
+              if(mProjectile->Collided(*inv)){
+                  std::cout << "Hit!" << std::endl;
+                  mProjectile->Hide();
+                  inv->Destroy();
+                  mScore += 10;
+                  mInvaderList->IncreaseAnimationSpeed();
+              }
           }
       }
     }
 
-    if(mInvaderList.Landed()){
+    if(mInvaderList->Landed()){
         mCannon->Destroy();
         mGameStateManager.EndGame();
+    }
+
+    if(mBomb->Displayed()){
+        mBomb->Move(mBomb->X(), mBomb->Y() + 3);
+
+        // went off screen
+        if(mBomb->Y() >= mWindowHeight){
+            mBomb->Hide();
+        } else {
+            if(mBomb->Collided(*mCannon)){
+                mCannon->Destroy();
+                mBomb->Hide();
+                mGameStateManager.EndGame();
+            }
+        }
     }
 }
 

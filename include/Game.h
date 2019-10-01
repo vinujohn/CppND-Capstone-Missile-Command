@@ -29,7 +29,8 @@ private:
     std::vector<std::shared_ptr<Sprite>> mSpriteList;
     std::shared_ptr<Cannon> mCannon;
     std::shared_ptr<Sprite> mProjectile;
-    InvaderList mInvaderList;
+    std::shared_ptr<InvaderList> mInvaderList;
+    std::shared_ptr<Sprite> mBomb;
 
     int mScore;
     int mWindowWidth, mWindowHeight, mWindowOffset;

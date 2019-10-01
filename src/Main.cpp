@@ -13,15 +13,13 @@ int main() {
     const std::string spriteFile = "./assets/sprites.png";
     const int FPS = 60;
     const int DELAY_TIME = 1000.0f / FPS;
-
-    Renderer r(windowWidth, windowHeight, bgFile, spriteFile);
-
-    //auto bomb = Renderer::SpriteAsset{0, 69, 20, 14};
-
+    
     Game g(windowWidth, windowHeight, windowOffset);
-    auto kc = KeyboardController();
 
-    g.Run(DELAY_TIME, kc, r);
+    KeyboardController controller;
+    Renderer renderer(windowWidth, windowHeight, bgFile, spriteFile);
+
+    g.Run(DELAY_TIME, controller, renderer);
 
     std::cout << "Bye" << std::endl;
     return 0;
