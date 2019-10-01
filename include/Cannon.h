@@ -11,10 +11,7 @@
 class Cannon : public Sprite {
 public:
     Cannon(int windowWidth, std::vector<Rect> cannonAnimations, std::shared_ptr<Sprite> projectile)
-        : Sprite(cannonAnimations){
-        mProjectile = projectile;
-        mWindowWidth = windowWidth;
-    }
+        : Sprite(cannonAnimations), mProjectile(projectile), mWindowWidth(windowWidth), mDestroyed(false){}
 
     void Fire(){
         if(!mProjectile->Displayed()){
@@ -50,10 +47,6 @@ public:
     void Destroy(){
         SetAnimationIndex(1);
         mDestroyed = true;
-    }
-
-    bool Destroyed(){
-        return mDestroyed;
     }
 
 private:
