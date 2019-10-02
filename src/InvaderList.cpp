@@ -90,7 +90,7 @@ void InvaderList::IncreaseAnimationSpeed() {
 }
 
 void InvaderList::DropBomb() {
-    if(!mBomb->Displayed()){
+    if(!mBomb->Displayed() && this->size() > 0){
         // choose random invader
         std::uniform_int_distribution<int> dist(0, this->size() - 1);
         auto randomInvader = (*this)[dist(mRandomEngine)];
