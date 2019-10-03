@@ -6,30 +6,26 @@
 #define SPACEINVADERS_GAMESTATE_H
 
 enum class GameState{
-    Started, Running, Ended, Exited
+    Started, Running, Won, Lost, Exited
 };
 
 class GameStateManager {
     friend class Game;
 public:
-    const GameState CurrentGameState(){
-        return mCurrentState;
-    };
-
     void ExitGame() {
         mCurrentState = GameState::Exited;
     };
 
-    void EndGame() {
-        mCurrentState = GameState::Ended;
-    };
+private:
+    GameState mCurrentState;
 
-    void SetState(GameState state){
+    void SetState(const GameState state){
         mCurrentState = state;
     };
 
-private:
-    GameState mCurrentState;
+    const GameState& GetState(){
+        return mCurrentState;
+    }
 };
 
 #endif //SPACEINVADERS_GAMESTATE_H

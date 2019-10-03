@@ -11,6 +11,10 @@
 #include <string>
 #include <vector>
 
+enum class MessageBoxOutput {
+    Unknown, Yes, Exit
+};
+
 class Renderer {
 private:
     SDL_Window *mWindow;
@@ -33,6 +37,8 @@ public:
     void Render(std::vector<std::shared_ptr<Sprite>> &sprites);
 
     void UpdateScore(int score);
+
+    MessageBoxOutput DisplayEndGameMessage(std::string message, int score);
 };
 
 #endif //SPACE_INVADERS_RENDERER_H

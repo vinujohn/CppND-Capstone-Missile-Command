@@ -21,8 +21,6 @@ public:
 
     void Run(int delayBetweenFramesMs, Controller&, Renderer&);
 
-    void Update(int referenceTicks);
-
 private:
     GameStateManager mGameStateManager; //todo change to unique ptr
 
@@ -34,6 +32,10 @@ private:
 
     int mScore;
     int mWindowWidth, mWindowHeight, mWindowOffset;
+
+    void Update(int referenceTicks);
+
+    void Start();
 };
 
 #endif //SPACEINVADERS_GAME_H

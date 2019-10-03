@@ -8,10 +8,8 @@
 #include "Game.h"
 
 // TODO figure out how to initialize mCannon cleanly
-Game::Game(int windowWidth, int windowHeight, int windowOffset) {
-    mWindowWidth = windowWidth;
-    mWindowHeight = windowHeight;
-    mWindowOffset = windowOffset;
+Game::Game(int windowWidth, int windowHeight, int windowOffset)
+            : mWindowWidth(windowWidth), mWindowHeight(windowHeight), mWindowOffset(windowOffset) {
 
     // TODO remove this to the outside
     mProjectile = std::shared_ptr<Sprite>(new Sprite(std::vector<Rect>{{20, 60, 20, 14}}));
@@ -81,7 +79,7 @@ void Game::Update(int referenceTicks) {
 
     if(mInvaderList->Landed()){
         mCannon->Destroy();
-        mGameStateManager.EndGame();
+        mGameStateManager.SetState(GameState::Lost);
     }
 
     if(mBomb->Displayed()){
@@ -90,13 +88,17 @@ void Game::Update(int referenceTicks) {
         // went off screen
         if(mBomb->Y() >= mWindowHeight){
             mBomb->Hide();
-        } else {
+        } else { // enemy bomb hit cannon
             if(mBomb->Collided(*mCannon)){
                 mCannon->Destroy();
                 mBomb->Hide();
-                mGameStateManager.EndGame();
+                mGameStateManager.SetState(GameState::Lost);
             }
         }
+    }
+
+    if(mInvaderList->size() == 0){
+        mGameStateManager.SetState(GameState::Won);
     }
 }
 
@@ -104,16 +106,17 @@ void Game::Run(int delayBetweenFramesMs, Controller &controller, Renderer &rende
     Uint32 frameStart, frameTime;
     mGameStateManager.SetState(GameState::Started);
 
-    while(mGameStateManager.CurrentGameState() != GameState::Exited){
+    while(mGameStateManager.GetState() != GameState::Exited){
 
         frameStart = SDL_GetTicks();
 
         // game loop
         controller.HandleInput(mGameStateManager, *mCannon);
 
-        switch(mGameStateManager.CurrentGameState()){
+        MessageBoxOutput choice;
+        switch(mGameStateManager.GetState()){
             case GameState :: Started:
-                mCannon -> Move(mWindowWidth/2, mWindowHeight - mCannon->H());
+                Start();
                 mGameStateManager.SetState((GameState::Running));
                 break;
             case GameState::Running:
@@ -121,6 +124,18 @@ void Game::Run(int delayBetweenFramesMs, Controller &controller, Renderer &rende
                 renderer.Render(mSpriteList);
                 renderer.UpdateScore(mScore);
                 break;
+            case GameState::Won:
+                choice = renderer.DisplayEndGameMessage("You Won!", mScore);
+                break;
+            case GameState::Lost:
+                choice = renderer.DisplayEndGameMessage("You Lose!", mScore);
+                break;
+        }
+
+        if(choice == MessageBoxOutput::Yes){
+            mGameStateManager.SetState(GameState::Started);
+        }else if(choice == MessageBoxOutput::Exit){
+            mGameStateManager.ExitGame();
         }
 
         frameTime = SDL_GetTicks() - frameStart;
@@ -131,5 +146,9 @@ void Game::Run(int delayBetweenFramesMs, Controller &controller, Renderer &rende
     }
 
     std::cout << "game has ended" << std::endl;
+}
+
+void Game::Start() {
+    mCannon -> Move(mWindowWidth/2, mWindowHeight - mCannon->H());
 }
 

@@ -107,3 +107,27 @@ void Renderer::UpdateScore(int score){
 
     SDL_SetWindowTitle(mWindow, scoreStr.c_str());
 }
+
+MessageBoxOutput Renderer::DisplayEndGameMessage(std::string message, int score) {
+    const SDL_MessageBoxButtonData buttons[] = {
+            { SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT, 1, "YES" },
+            { SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT, 2, "EXIT" },
+    };
+
+    message = message + " Final Score - " + std::to_string(score);
+
+    const SDL_MessageBoxData messageboxdata = {
+            SDL_MESSAGEBOX_INFORMATION,
+            mWindow,
+            "Game Over.  Do you want to play again?",
+            message.c_str(),
+            SDL_arraysize(buttons),
+            buttons,
+            nullptr
+    };
+
+    int buttonId;
+    SDL_ShowMessageBox(&messageboxdata, &buttonId);
+
+    return buttonId == (int)MessageBoxOutput::Yes ? MessageBoxOutput::Yes : MessageBoxOutput::Exit;
+}
