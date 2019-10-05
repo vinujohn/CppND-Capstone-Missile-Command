@@ -10,7 +10,44 @@ a bomb, the invaders have made it to the bottom of the screen, or the player has
 ## Implementation
 <p>
 <img align="right" src="markdown/files.png">
-The game works using the SDL2 game engine to render a bunch of different sprites to the screen at a particular framerate.
+The game works using the SDL2 game engine to render a bunch of different sprites/assets to the screen at a particular 
+framerate while handling user input for the player.  The project itself is composed of the following classes.
+
+* Major Components
+    * Game
+        * Manages the state of the game
+        * Runs the game loop. (handle input, update game, render to screen)
+        * Handles interactions between different assets in the game like making sure an invader is destroyed after it
+        is hit by a projectile
+    * Renderer
+        * Renders a frame onto the screen
+        * Holds all SDL2 rendering objects
+        * Is used by the Game class to render assets to the screen, display message boxes, and update the title bar
+    * Controller/KeyboardController
+        * Controls the Cannon object by setting its state so that it can move left or right and fire a projectile based
+        on keyboard input.
+        * KeyboardController inherits from Controller.  Another controller could also be used like a 
+        JoystickController and just plugged into the game.
+        * Listens for the SDL2 Exit game event when the user tries to leave the game by closing the window.
+        * Used by the Game class to be called on every time input is needed.
+* Minor Components
+    * Sprite
+        * Every asset that can be drawn on the screen inherits from this class or uses this class directly.
+        * Holds common attributes for every sprite including sprite coordinates, animations, and common behavior like
+        Display() and Hide()
+    * Cannon
+        * Controlled by the player
+        * Can move left or right and fire a projectile
+        * Can be destroyed by invader bombs or if an invader has reach the bottom of the screen
+    * Invader/InvaderList
+        * Invader made up of multiple animations including a common "destroyed" animation
+        * InvaderList derives from a vector of Invaders and holds state information common to all invaders like the
+        current direction that all invaders should be moving towards
+    * GameState
+        * Holds game state so that multiple components can query this state or set it
+        * Used by the KeyboardController to exit the game if the user closes the game window
+        * States include Started, Running, Won, Lost, ExitCalled
+        * Friend class to the Game itself
 </p>
 
 ---
