@@ -8,8 +8,10 @@ bomb at a time trying to destroy the player's cannon.  The game ends when either
 a bomb, the invaders have made it to the bottom of the screen, or the player has successfully destroyed all invaders.
 
 ## Implementation
+<p>
 <img align="right" src="markdown/files.png">
 The game works using the SDL2 game engine to render a bunch of different sprites to the screen at a particular framerate.
+</p>
 
 ---
 ## Dependencies for Running Locally
