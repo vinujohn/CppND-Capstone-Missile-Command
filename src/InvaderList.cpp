@@ -4,16 +4,27 @@
 #include "InvaderList.h"
 #include <random>
 
-InvaderList::InvaderList(int animationSpeedMs, int leftBound, int rightBound, int lowerBound, std::shared_ptr<Sprite> bomb)
-        : mCurrentDirection(Direction::Right)
-        , mNextDirectionAfterDown(Direction::Left)
-        , mFrameStart(0)
-        , mBomb(bomb)
-        , mStartAnimateSpeedMs(animationSpeedMs)
-        , mCurrentAnimateSpeedMs(animationSpeedMs)
-        , mLeftBound(leftBound)
-        , mRightBound(rightBound)
-        , mLowerBound(lowerBound) {
+InvaderList::InvaderList(
+        int animationSpeedMs
+        , int increaseAnimateSpeedByMs
+        , int numRows
+        , int numCols
+        , int leftBound
+        , int rightBound
+        , int lowerBound
+        , std::shared_ptr<Sprite> bomb)
+            : mCurrentDirection(Direction::Right)
+            , mNextDirectionAfterDown(Direction::Left)
+            , mFrameStart(0)
+            , mBomb(bomb)
+            , mNumRows(numRows)
+            , mNumCols(numCols)
+            , mStartAnimateSpeedMs(animationSpeedMs)
+            , mCurrentAnimateSpeedMs(animationSpeedMs)
+            , mIncreaseAnimateSpeedByMs(increaseAnimateSpeedByMs)
+            , mLeftBound(leftBound)
+            , mRightBound(rightBound)
+            , mLowerBound(lowerBound) {
 
     std::random_device rd;
     mRandomEngine = std::mt19937{rd()};
@@ -95,7 +106,7 @@ void InvaderList::SetNextMove() {
 }
 
 void InvaderList::IncreaseAnimationSpeed() {
-    mCurrentAnimateSpeedMs -= 20;
+    mCurrentAnimateSpeedMs -= mIncreaseAnimateSpeedByMs;
 }
 
 void InvaderList::DropBomb() {
@@ -123,6 +134,14 @@ void InvaderList::Reset() {
 
     for (auto &inv : *this) {
         inv->Reset();
+    }
+
+    for (int row = 0; row < mNumRows; row++) {
+        for (int col = 0; col < mNumCols; col++) {
+            auto invader = (*this)[row * mNumCols + col];
+            invader->Move(invader->W() + (2 * col * invader->W()), (mLowerBound / 5) + (2 * row * invader->H()));
+            invader->Display();
+        }
     }
 }
 

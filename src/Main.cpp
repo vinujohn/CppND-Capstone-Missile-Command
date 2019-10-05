@@ -1,4 +1,3 @@
-#include "SDL.h"
 #include "Renderer.h"
 #include "KeyboardController.h"
 #include <iostream>
@@ -46,6 +45,7 @@ int main() {
 
     constexpr int moveCannonBy = 2;
     constexpr int enemyAnimationSpeedMs = 500;
+    constexpr int increaseAnimationSpeedByMs = 20;
     constexpr int numInvadersPerRow = 5;
     const int numInvaderRows = invaderAnimations.size();
 
@@ -54,7 +54,8 @@ int main() {
     auto cannon = std::shared_ptr<Cannon>(new Cannon(cannonAnimations, windowWidth, projectile, moveCannonBy));
     auto bomb = std::shared_ptr<Sprite>(new Sprite(bombAnimations));
     auto invaderList = std::shared_ptr<InvaderList>(
-            new InvaderList(enemyAnimationSpeedMs, windowOffset, windowWidth - windowOffset, windowHeight - windowOffset, bomb));
+            new InvaderList(enemyAnimationSpeedMs, increaseAnimationSpeedByMs, numInvaderRows, numInvadersPerRow,
+                            windowOffset, windowWidth - windowOffset, windowHeight - windowOffset, bomb));
 
     // create and add invaders to list
     for (int row = 0; row < numInvaderRows; row++) {
@@ -64,14 +65,14 @@ int main() {
         }
     }
 
-    Game g(windowWidth, windowHeight, windowOffset, projectile, cannon, bomb, invaderList, numInvaderRows, numInvadersPerRow);
+    Game g(windowWidth, windowHeight, windowOffset, projectile, cannon, bomb, invaderList);
 
     KeyboardController controller;
     Renderer renderer(windowWidth, windowHeight, bgFile, spriteFile);
 
     g.Run(DELAY_TIME, controller, renderer);
 
-    std::cout << "Bye" << std::endl;
+    std::cout << "Main ended" << std::endl;
     return 0;
 }
 

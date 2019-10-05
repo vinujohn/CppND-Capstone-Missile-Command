@@ -14,18 +14,14 @@ Game::Game(int windowWidth
             , std::shared_ptr<Sprite> projectile
             , std::shared_ptr<Cannon> cannon
             , std::shared_ptr<Sprite> bomb
-            , std::shared_ptr<InvaderList> invaderList
-            , int numRows
-            , int numInvadersPerRow)
+            , std::shared_ptr<InvaderList> invaderList)
         : mWindowWidth(windowWidth)
         , mWindowHeight(windowHeight)
         , mWindowOffset(windowOffset)
         , mProjectile(projectile)
         , mCannon(cannon)
         , mBomb(bomb)
-        , mInvaderList(invaderList)
-        , mNumRows(numRows)
-        , mNumInvadersPerRow(numInvadersPerRow){
+        , mInvaderList(invaderList) {
 
     mGameStateManager = std::make_shared<GameStateManager>();
 
@@ -139,15 +135,7 @@ void Game::Start() {
     mCannon->Display();
     mProjectile->Hide();
     mBomb->Hide();
-
     mInvaderList->Reset();
-    for (int row = 0; row < mNumRows; row++) {
-        for (int col = 0; col < mNumInvadersPerRow; col++) {
-            auto invader = (*mInvaderList)[row * mNumInvadersPerRow + col];
-            invader->Move(invader->W() + (2 * col * invader->W()), (mWindowHeight / 5) + (2 * row * invader->H()));
-            invader->Display();
-        }
-    }
 
     mScore = 0;
 }

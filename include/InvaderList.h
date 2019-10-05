@@ -16,7 +16,15 @@ public:
         Right, Left, Down
     };
 
-    InvaderList(int animationSpeedMs, int leftBound, int rightBound, int lowerBound, std::shared_ptr<Sprite> bomb);
+    InvaderList(
+            int animationSpeedMs
+            , int increaseAnimateSpeedByMs
+            , int numRows
+            , int numCols
+            , int leftBound
+            , int rightBound
+            , int lowerBound
+            , std::shared_ptr<Sprite> bomb);
 
     void Update(int referenceTicks);
 
@@ -31,9 +39,9 @@ public:
 private:
     Direction mCurrentDirection;
     Direction mNextDirectionAfterDown;
+    int mNumRows, mNumCols;
     int mLeftBound, mRightBound, mLowerBound;
-    int mStartAnimateSpeedMs;
-    int mCurrentAnimateSpeedMs;
+    int mStartAnimateSpeedMs, mCurrentAnimateSpeedMs, mIncreaseAnimateSpeedByMs;
     int mFrameStart;
     std::mt19937 mRandomEngine;
 

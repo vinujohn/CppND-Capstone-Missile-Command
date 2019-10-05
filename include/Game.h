@@ -23,9 +23,7 @@ public:
             , std::shared_ptr<Sprite> projectile
             , std::shared_ptr<Cannon> cannon
             , std::shared_ptr<Sprite> bomb
-            , std::shared_ptr<InvaderList> invaderList  //TODO figure out if this can not be a ptr
-            , int numRows
-            , int numInvadersPerRow);
+            , std::shared_ptr<InvaderList> invaderList);
 
     void Run(int delayBetweenFramesMs, Controller &, Renderer &);
 
@@ -38,11 +36,8 @@ private:
     std::shared_ptr<InvaderList> mInvaderList;
     std::shared_ptr<Sprite> mBomb;
 
-    std::vector<std::vector<Rect>> mEnemyAnimations;
-
     int mScore;
     int mWindowWidth, mWindowHeight, mWindowOffset;
-    int mNumRows, mNumInvadersPerRow;
 
     void Update(int referenceTicks);
 
