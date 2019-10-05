@@ -5,7 +5,8 @@ Space Invaders is a classical 2D game which was introduced in the late 70's.  Th
 who are trying to make their way to the bottom of the screen.  The player, controls a cannon which moves left or right
 and can shoot one projectile at a time at the invaders to destroy them.  The invaders can also collectively drop one 
 bomb at a time trying to destroy the player's cannon.  The game ends when either the player's cannon is destroyed by 
-a bomb, the invaders have made it to the bottom of the screen, or the player has successfully destroyed all invaders.
+a bomb, the invaders have made it to the bottom of the screen signifying a successful invasion, or the player has 
+successfully destroyed all invaders.
 
 ## Implementation
 <p>
@@ -25,12 +26,12 @@ framerate while handling user input for the player.  The project itself is compo
         * Is used by the Game class to render assets to the screen, display message boxes, and update the title bar
         * Does not know anything about the current game state
     * Controller/KeyboardController
-        * Controls the Cannon object by setting its state so that it can move left or right and fire a projectile based
+        * Controls the Cannon object by setting it's state so that it can move left or right and fire a projectile based
         on keyboard input.
         * KeyboardController inherits from Controller.  Another controller could also be used like a 
         JoystickController and just plugged into the game.
         * Listens for the SDL2 Exit game event when the user tries to leave the game by closing the game window.
-        * Used by the Game class to be called on every time input is needed.
+        * Used by the Game class every time input is needed.
 * Minor Components
     * Sprite
         * Every asset that can be drawn on the screen inherits from this class or uses this class directly.
@@ -38,8 +39,8 @@ framerate while handling user input for the player.  The project itself is compo
         Display() and Hide()
     * Cannon
         * Controlled by the player
-        * Can move left or right and fire a projectile
-        * Can be destroyed by invader bombs or if an invader has reached the bottom of the screen
+        * Can move left or move right or fire a projectile
+        * Can be destroyed by bombs dropped by invaders or if an invader has reached the bottom of the screen
     * Invader/InvaderList
         * Invader made up of multiple animations including a common "destroyed" animation
         * InvaderList derives from a vector of Invaders and holds state information common to all invaders like the
