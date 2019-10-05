@@ -8,60 +8,60 @@
 #include "Sprite.h"
 #include <iostream>
 
-class Invader : public Sprite{
+class Invader : public Sprite {
 public:
     Invader(std::vector<Rect> animations, int startAnimationIndex)
-            : mStartAnimationIndex(startAnimationIndex), mDestroyed(false), Sprite(animations){
+            : mStartAnimationIndex(startAnimationIndex), mDestroyed(false), Sprite(animations) {
         SetAnimationIndex(startAnimationIndex);
     }
 
-    void Animate(){
+    void Animate() {
         SetAnimationIndex((GetAnimationIndex() + 1) % 2);
     }
 
-    void Destroy(){
+    void Destroy() {
         SetAnimationIndex(2);
         mDestroyed = true;
     }
 
-    bool Destroyed(){
+    bool Destroyed() {
         return mDestroyed;
     }
 
-    bool CanMoveRight(int bound){
-        if(X() + W() < bound){
+    bool CanMoveRight(int bound) {
+        if (X() + W() < bound) {
             return true;
         }
         return false;
     }
 
-    void MoveRight(){
-        Move(X() + W(),Y());
+    void MoveRight() {
+        Move(X() + W(), Y());
     };
 
-    bool CanMoveLeft(int bound){
-        if(X() - W() >= bound){
+    bool CanMoveLeft(int bound) {
+        if (X() - W() >= bound) {
             return true;
         }
         return false;
     }
 
-    void MoveLeft(){
+    void MoveLeft() {
         Move(X() - W(), Y());
     }
 
-    void MoveDown(){
+    void MoveDown() {
         Move(X(), Y() + H());
     }
 
-    bool CanMoveDown(int bound){
-        if(Y() + H() < bound){
+    bool CanMoveDown(int bound) {
+        if (Y() + H() < bound) {
             return true;
         }
         return false;
     }
 
-    void Reset(){
+    void Reset() {
         SetAnimationIndex(mStartAnimationIndex);
         mDestroyed = false;
     }

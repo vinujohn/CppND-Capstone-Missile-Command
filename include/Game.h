@@ -19,7 +19,7 @@ class Game {
 public:
     Game(int windowWidth, int windowHeight, int windowOffset);
 
-    void Run(int delayBetweenFramesMs, Controller&, Renderer&);
+    void Run(int delayBetweenFramesMs, Controller &, Renderer &);
 
 private:
     GameStateManager mGameStateManager; //todo change to unique ptr

@@ -29,8 +29,8 @@ private:
     void Cleanup();
 
 public:
-    Renderer(int windowWidth, int windowHeight
-            , const std::string &backgroundFilePath, const std::string &spriteSheetFilePath);
+    Renderer(int windowWidth, int windowHeight, const std::string &backgroundFilePath,
+             const std::string &spriteSheetFilePath);
 
     ~Renderer();
 

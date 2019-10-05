@@ -5,12 +5,13 @@
 #ifndef SPACEINVADERS_GAMESTATE_H
 #define SPACEINVADERS_GAMESTATE_H
 
-enum class GameState{
+enum class GameState {
     Started, Running, Won, Lost, Exited
 };
 
 class GameStateManager {
     friend class Game;
+
 public:
     void ExitGame() {
         mCurrentState = GameState::Exited;
@@ -19,11 +20,11 @@ public:
 private:
     GameState mCurrentState;
 
-    void SetState(const GameState state){
+    void SetState(const GameState state) {
         mCurrentState = state;
     };
 
-    const GameState& GetState(){
+    const GameState &GetState() {
         return mCurrentState;
     }
 };

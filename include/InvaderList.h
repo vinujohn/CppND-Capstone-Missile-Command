@@ -4,6 +4,7 @@
 
 #ifndef SPACEINVADERS_INVADERLIST_H
 #define SPACEINVADERS_INVADERLIST_H
+
 #include <vector>
 #include "Invader.h"
 #include <iostream>
@@ -11,28 +12,28 @@
 
 class InvaderList : public std::vector<std::shared_ptr<Invader>> {
 public:
-    enum class Direction{
+    enum class Direction {
         Right, Left, Down
     };
 
     InvaderList(int animationSpeedMs, int leftBound, int rightBound, int lowerBound, std::shared_ptr<Sprite> bomb)
-        : mCurrentDirection(Direction::Right), mNextDirectionAfterDown(Direction::Left)
-        , mFrameStart(0), mBomb(bomb), mStartAnimateSpeedMs(animationSpeedMs), mCurrentAnimateSpeedMs(animationSpeedMs)
-        , mLeftBound(leftBound), mRightBound(rightBound), mLowerBound(lowerBound){
+            : mCurrentDirection(Direction::Right), mNextDirectionAfterDown(Direction::Left), mFrameStart(0),
+              mBomb(bomb), mStartAnimateSpeedMs(animationSpeedMs), mCurrentAnimateSpeedMs(animationSpeedMs),
+              mLeftBound(leftBound), mRightBound(rightBound), mLowerBound(lowerBound) {
 
         std::random_device rd;
         mRandomEngine = std::mt19937{rd()};
     }
 
-        void Update(int referenceTicks);
+    void Update(int referenceTicks);
 
-        bool Landed();
+    bool Landed();
 
-        void IncreaseAnimationSpeed();
+    void IncreaseAnimationSpeed();
 
-        void Reset();
+    void Reset();
 
-        bool Destroyed();
+    bool Destroyed();
 
 private:
     Direction mCurrentDirection;
@@ -46,7 +47,9 @@ private:
     std::shared_ptr<Sprite> mBomb;
 
     void SetNextMove();
+
     void Move();
+
     void DropBomb();
 };
 

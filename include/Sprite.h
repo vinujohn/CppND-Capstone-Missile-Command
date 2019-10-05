@@ -7,39 +7,46 @@
 
 #include <vector>
 
-struct Rect{
+struct Rect {
     int x, y, w, h;
 };
 
 class Sprite {
 public:
     Sprite(std::vector<Rect> animations)
-        : mAnimations(animations), mDisplayed(false), mCurrentAnimationIndex(0){
+            : mAnimations(animations), mDisplayed(false), mCurrentAnimationIndex(0) {
         //Take height and width from first animation for now.
-        mScreen = Rect{0,0, animations[0].w, animations[0].h};
+        mScreen = Rect{0, 0, animations[0].w, animations[0].h};
     }
 
-    void Hide(){mDisplayed = false;}
-    void Display(){mDisplayed = true;}
-    bool Displayed(){return mDisplayed;}
+    void Hide() { mDisplayed = false; }
 
-    const int X(){return mScreen.x;}
-    const int Y(){return mScreen.y;}
-    const int W(){return mScreen.w;}
-    const int H(){return mScreen.h;}
+    void Display() { mDisplayed = true; }
 
-    void SetAnimationIndex(int index){ mCurrentAnimationIndex = index;}
-    int GetAnimationIndex(){return mCurrentAnimationIndex;}
-    const Rect GetCurrentAnimation(){return mAnimations[mCurrentAnimationIndex];}
+    bool Displayed() { return mDisplayed; }
 
-    void Move(int x, int y){
+    const int X() { return mScreen.x; }
+
+    const int Y() { return mScreen.y; }
+
+    const int W() { return mScreen.w; }
+
+    const int H() { return mScreen.h; }
+
+    void SetAnimationIndex(int index) { mCurrentAnimationIndex = index; }
+
+    int GetAnimationIndex() { return mCurrentAnimationIndex; }
+
+    const Rect GetCurrentAnimation() { return mAnimations[mCurrentAnimationIndex]; }
+
+    void Move(int x, int y) {
         mScreen.x = x;
         mScreen.y = y;
     }
 
-    bool Collided(Sprite &sprite){
-        if(this->X() >= sprite.X() && this->X() <= sprite.X() + sprite.W()){
-            if(this->Y() <= sprite.Y() && (this->Y() + this->H()) >= sprite.Y()){
+    bool Collided(Sprite &sprite) {
+        if (this->X() >= sprite.X() && this->X() <= sprite.X() + sprite.W()) {
+            if (this->Y() <= sprite.Y() && (this->Y() + this->H()) >= sprite.Y()) {
                 return true;
             }
         }

@@ -9,7 +9,7 @@ void InvaderList::Update(int referenceTicks) {
         mFrameStart = referenceTicks;
 
         // hide destroyed invaders in list
-        for(auto &inv : *this){
+        for (auto &inv : *this) {
             if (inv->Destroyed()) {
                 inv->Hide();
             }
@@ -23,9 +23,9 @@ void InvaderList::Update(int referenceTicks) {
 }
 
 void InvaderList::Move() {
-    for(auto &inv : *this){
+    for (auto &inv : *this) {
         inv->Animate();
-        switch (mCurrentDirection){
+        switch (mCurrentDirection) {
             case Direction::Right:
                 inv->MoveRight();
                 break;
@@ -39,9 +39,9 @@ void InvaderList::Move() {
     }
 }
 
-bool InvaderList::Landed(){
-    for(auto &inv : *this){
-        if(!inv->CanMoveDown(mLowerBound)){
+bool InvaderList::Landed() {
+    for (auto &inv : *this) {
+        if (!inv->CanMoveDown(mLowerBound)) {
             return true;
         }
     }
@@ -50,18 +50,18 @@ bool InvaderList::Landed(){
 
 void InvaderList::SetNextMove() {
 
-    switch(mCurrentDirection){
+    switch (mCurrentDirection) {
         case Direction::Right:
-            for(auto &inv : *this){
-                if(!inv->Destroyed() && !inv->CanMoveRight(mRightBound)){
+            for (auto &inv : *this) {
+                if (!inv->Destroyed() && !inv->CanMoveRight(mRightBound)) {
                     mCurrentDirection = Direction::Down;
                     break;
                 }
             }
             break;
         case Direction::Left:
-            for(auto &inv : *this){
-                if(!inv->Destroyed() && !inv->CanMoveLeft(mLeftBound)){
+            for (auto &inv : *this) {
+                if (!inv->Destroyed() && !inv->CanMoveLeft(mLeftBound)) {
                     mCurrentDirection = Direction::Down;
                     break;
                 }
@@ -84,10 +84,11 @@ void InvaderList::IncreaseAnimationSpeed() {
 }
 
 void InvaderList::DropBomb() {
-    if(!mBomb->Displayed() && this->size() > 0){
+    if (!mBomb->Displayed() && this->size() > 0) {
         // choose random invader
         std::vector<std::shared_ptr<Invader>> aliveInvaders;
-        std::copy_if (this->begin(), this->end(), std::back_inserter(aliveInvaders), [](std::shared_ptr<Invader> i){return !i->Destroyed();} );
+        std::copy_if(this->begin(), this->end(), std::back_inserter(aliveInvaders),
+                     [](std::shared_ptr<Invader> i) { return !i->Destroyed(); });
 
         std::uniform_int_distribution<int> dist(0, aliveInvaders.size() - 1);
         std::shared_ptr<Invader> randomInvader = aliveInvaders[dist(mRandomEngine)];
@@ -105,13 +106,13 @@ void InvaderList::Reset() {
     mFrameStart = 0;
     mCurrentAnimateSpeedMs = mStartAnimateSpeedMs;
 
-    for(auto &inv : *this){
+    for (auto &inv : *this) {
         inv->Reset();
     }
 }
 
 bool InvaderList::Destroyed() {
-    for(auto &inv : *this){
+    for (auto &inv : *this) {
         if (!inv->Destroyed()) {
             return false;
         }

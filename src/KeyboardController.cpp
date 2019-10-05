@@ -14,15 +14,15 @@ void KeyboardController::HandleInput(GameStateManager &stateManager, Cannon &can
         }
     }
 
-    const Uint8* currentKeyStates = SDL_GetKeyboardState( nullptr );
+    const Uint8 *currentKeyStates = SDL_GetKeyboardState(nullptr);
 
-    if(currentKeyStates[SDL_SCANCODE_RIGHT]){
+    if (currentKeyStates[SDL_SCANCODE_RIGHT]) {
         cannon.MoveRight();
     }
-    if(currentKeyStates[SDL_SCANCODE_LEFT]){
+    if (currentKeyStates[SDL_SCANCODE_LEFT]) {
         cannon.MoveLeft();
     }
-    if(currentKeyStates[SDL_SCANCODE_SPACE]){
+    if (currentKeyStates[SDL_SCANCODE_SPACE]) {
         cannon.Fire();
     }
 }

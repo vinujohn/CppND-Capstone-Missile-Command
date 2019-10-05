@@ -16,9 +16,9 @@ void Renderer::ThrowIfError(bool isError, const std::string &errMsg) {
     }
 }
 
-Renderer::Renderer(int windowWidth, int windowHeight
-        , const std::string &backgroundFilePath, const std::string &spriteFilePath)
-    : mWindowWidth(windowWidth), mWindowHeight(windowHeight) {
+Renderer::Renderer(int windowWidth, int windowHeight, const std::string &backgroundFilePath,
+                   const std::string &spriteFilePath)
+        : mWindowWidth(windowWidth), mWindowHeight(windowHeight) {
     // initialize SDL
     ThrowIfError(
             SDL_Init(SDL_INIT_VIDEO) != 0,
@@ -69,10 +69,10 @@ Renderer::~Renderer() {
 }
 
 void Renderer::Cleanup() {
-    if(mBackgroundTexture != nullptr){
+    if (mBackgroundTexture != nullptr) {
         SDL_DestroyTexture(mBackgroundTexture);
     }
-    if(mSpriteSheetTexture != nullptr){
+    if (mSpriteSheetTexture != nullptr) {
         SDL_DestroyTexture(mSpriteSheetTexture);
     }
     if (mRenderer != nullptr) {
@@ -90,8 +90,8 @@ void Renderer::Render(std::vector<std::shared_ptr<Sprite>> &sprites) {
 
     SDL_RenderCopy(mRenderer, mBackgroundTexture, nullptr, nullptr);
 
-    for(auto s : sprites){
-        if(s->Displayed()) {
+    for (auto s : sprites) {
+        if (s->Displayed()) {
             auto a = s->GetCurrentAnimation();
             auto src = SDL_Rect{a.x, a.y, a.w, a.h};
             auto dst = SDL_Rect{s->X(), s->Y(), s->W(), s->H()};
@@ -102,7 +102,7 @@ void Renderer::Render(std::vector<std::shared_ptr<Sprite>> &sprites) {
     SDL_RenderPresent(mRenderer);
 }
 
-void Renderer::UpdateScore(int score){
+void Renderer::UpdateScore(int score) {
     std::string scoreStr = "Space Invaders - Score: " + std::to_string(score);
 
     SDL_SetWindowTitle(mWindow, scoreStr.c_str());
@@ -110,8 +110,8 @@ void Renderer::UpdateScore(int score){
 
 MessageBoxOutput Renderer::DisplayEndGameMessage(std::string message, int score) {
     const SDL_MessageBoxButtonData buttons[] = {
-            { SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT, 1, "YES" },
-            { SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT, 2, "EXIT" },
+            {SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT, 1, "YES"},
+            {SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT, 2, "EXIT"},
     };
 
     message = message + " Final Score - " + std::to_string(score);
@@ -129,5 +129,5 @@ MessageBoxOutput Renderer::DisplayEndGameMessage(std::string message, int score)
     int buttonId;
     SDL_ShowMessageBox(&messageboxdata, &buttonId);
 
-    return buttonId == (int)MessageBoxOutput::Yes ? MessageBoxOutput::Yes : MessageBoxOutput::Exit;
+    return buttonId == (int) MessageBoxOutput::Yes ? MessageBoxOutput::Yes : MessageBoxOutput::Exit;
 }
