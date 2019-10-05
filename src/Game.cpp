@@ -130,7 +130,6 @@ void Game::Run(int delayBetweenFramesMs, Controller &controller, Renderer &rende
 }
 
 void Game::Start() {
-    mCannon->Move(mWindowWidth / 2, mWindowHeight - mCannon->H());
     mCannon->Reset();
     mCannon->Display();
     mProjectile->Hide();

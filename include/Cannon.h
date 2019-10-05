@@ -12,6 +12,7 @@ class Cannon : public Sprite {
 public:
     Cannon(std::vector<Rect> cannonAnimations
             , int windowWidth
+            , int windowHeight
             , std::shared_ptr<Sprite> projectile
             , int mMoveCannonBy);
 
@@ -27,7 +28,7 @@ public:
 
 private:
     std::shared_ptr<Sprite> mProjectile;
-    int mWindowWidth;
+    int mWindowWidth, mWindowHeight;
     int mMoveCannonBy;
     bool mDestroyed;
 };

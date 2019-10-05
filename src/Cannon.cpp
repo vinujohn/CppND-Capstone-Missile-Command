@@ -4,12 +4,21 @@
 
 #include "Cannon.h"
 
-Cannon::Cannon(std::vector<Rect> cannonAnimations, int windowWidth, std::shared_ptr<Sprite> projectile,
-               const int mMoveCannonBy)
-        : Sprite(cannonAnimations), mProjectile(projectile), mWindowWidth(windowWidth), mDestroyed(false),
-          mMoveCannonBy(mMoveCannonBy) {}
+Cannon::Cannon(
+        std::vector<Rect> cannonAnimations
+        , int windowWidth
+        , int windowHeight
+        , std::shared_ptr<Sprite> projectile
+        , const int mMoveCannonBy)
+            : Sprite(cannonAnimations)
+            , mProjectile(projectile)
+            , mWindowWidth(windowWidth)
+            , mWindowHeight(windowHeight)
+            , mDestroyed(false)
+            , mMoveCannonBy(mMoveCannonBy) {}
 
 void Cannon::Reset() {
+    this->Move(mWindowWidth / 2, mWindowHeight - this->H());
     SetAnimationIndex(0);
     mDestroyed = false;
 }
