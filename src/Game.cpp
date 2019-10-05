@@ -81,7 +81,7 @@ void Game::Update(int referenceTicks) {
     }
 }
 
-void Game::Run(int delayBetweenFramesMs, Controller &controller, Renderer &renderer) {
+void Game::Run(int delayBetweenFramesMs, const Controller &controller, const Renderer &renderer) {
     Uint32 frameStart, frameTime;
     mGameStateManager->SetState(GameState::Started);
 

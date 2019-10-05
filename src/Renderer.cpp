@@ -85,7 +85,7 @@ void Renderer::Cleanup() {
     SDL_Quit();
 }
 
-void Renderer::Render(std::vector<std::shared_ptr<Sprite>> &sprites) {
+void Renderer::Render(const std::vector<std::shared_ptr<Sprite>> &sprites) const {
     SDL_RenderClear(mRenderer);
 
     SDL_RenderCopy(mRenderer, mBackgroundTexture, nullptr, nullptr);
@@ -102,13 +102,13 @@ void Renderer::Render(std::vector<std::shared_ptr<Sprite>> &sprites) {
     SDL_RenderPresent(mRenderer);
 }
 
-void Renderer::UpdateScore(int score) {
+void Renderer::UpdateScore(int score) const {
     std::string scoreStr = "Space Invaders - Score: " + std::to_string(score);
 
     SDL_SetWindowTitle(mWindow, scoreStr.c_str());
 }
 
-MessageBoxOutput Renderer::DisplayEndGameMessage(std::string message, int score) {
+MessageBoxOutput Renderer::DisplayEndGameMessage(std::string message, int score) const {
     const SDL_MessageBoxButtonData buttons[] = {
             {SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT, 1, "YES"},
             {SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT, 2, "EXIT"},

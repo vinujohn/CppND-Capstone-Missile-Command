@@ -10,7 +10,7 @@
 class KeyboardController : public Controller {
 
 public:
-    void HandleInput(GameStateManager &, Cannon &) override;
+    void HandleInput(GameStateManager &, Cannon &) const override;
 };
 
 #endif //SPACEINVADERS_KEYBOARDCONTROLLER_H

@@ -10,7 +10,7 @@
 
 class Controller {
 public:
-    virtual void HandleInput(GameStateManager &, Cannon &) = 0;
+    virtual void HandleInput(GameStateManager &, Cannon &) const = 0;
 };
 
 #endif //SPACEINVADERS_CONTROLLER_H

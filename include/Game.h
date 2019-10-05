@@ -25,7 +25,7 @@ public:
             , std::shared_ptr<Sprite> bomb
             , std::shared_ptr<InvaderList> invaderList);
 
-    void Run(int delayBetweenFramesMs, Controller &, Renderer &);
+    void Run(int delayBetweenFramesMs, const Controller &, const Renderer &);
 
 private:
     std::shared_ptr<GameStateManager> mGameStateManager;

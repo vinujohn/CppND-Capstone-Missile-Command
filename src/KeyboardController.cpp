@@ -5,7 +5,7 @@
 #include "KeyboardController.h"
 #include "SDL.h"
 
-void KeyboardController::HandleInput(GameStateManager &stateManager, Cannon &cannon) {
+void KeyboardController::HandleInput(GameStateManager &stateManager, Cannon &cannon) const {
     SDL_Event e;
     if (SDL_PollEvent(&e)) {
         if (e.type == SDL_QUIT) {

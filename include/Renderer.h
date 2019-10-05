@@ -34,11 +34,11 @@ public:
 
     ~Renderer();
 
-    void Render(std::vector<std::shared_ptr<Sprite>> &sprites);
+    void Render(const std::vector<std::shared_ptr<Sprite>> &sprites) const;
 
-    void UpdateScore(int score);
+    void UpdateScore(int score) const;
 
-    MessageBoxOutput DisplayEndGameMessage(std::string message, int score);
+    MessageBoxOutput DisplayEndGameMessage(std::string message, int score) const;
 };
 
 #endif //SPACE_INVADERS_RENDERER_H
