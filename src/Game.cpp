@@ -6,17 +6,17 @@
 #include <SDL_timer.h>
 #include "Invader.h"
 #include "Game.h"
+#include <string>
 
-// TODO figure out how to initialize mCannon cleanly
 Game::Game(int windowWidth, int windowHeight, int windowOffset)
             : mWindowWidth(windowWidth), mWindowHeight(windowHeight), mWindowOffset(windowOffset) {
 
-    // TODO remove this to the outside
+    // TODO remove this to outside of Game using some type of builder pattern.
     mProjectile = std::shared_ptr<Sprite>(new Sprite(std::vector<Rect>{{20, 60, 20, 14}}));
     mCannon = std::shared_ptr<Cannon>(new Cannon(windowWidth, std::vector<Rect>{{20, 42, 20, 18}, {0, 42, 20, 18}}, mProjectile));
     mBomb = std::shared_ptr<Sprite>(new Sprite(std::vector<Rect>{{0, 69, 20, 14}}));
     mInvaderList = std::shared_ptr<InvaderList>(new InvaderList(500, windowOffset, windowWidth - windowOffset, windowHeight - windowOffset, mBomb));
-    auto enemyAnimations = std::vector<std::vector<Rect>>{
+    mEnemyAnimations = std::vector<std::vector<Rect>>{
         {
             {0, 0, 20, 14},
             {20, 0, 20, 14},
@@ -33,27 +33,21 @@ Game::Game(int windowWidth, int windowHeight, int windowOffset)
             {0, 58, 20, 14}
         }
     };
-    auto numEnemiesPerRow = 5;
-    auto invaderY = windowHeight / 5;
-    for(int row = 0; row < enemyAnimations.size(); row++){
-        for(int col = 0; col < numEnemiesPerRow; col++){
-            auto invader =std::shared_ptr<Invader>(new Invader(enemyAnimations[row], col % 2));
-            invader->Move(invader->W() + (2*col*invader->W()), invaderY + (2*row*invader->H()));
-            invader->Display();
+
+    mNumEnemiesPerRow = 5;
+    mNumRows = 1;
+    for(int row = 0; row < mNumRows; row++){
+        for(int col = 0; col < mNumEnemiesPerRow; col++){
+            auto invader =std::shared_ptr<Invader>(new Invader(mEnemyAnimations[row], col % 2));
             mInvaderList->push_back(invader);
         }
     }
-
-    mCannon->Display();
+    mSpriteList.insert(mSpriteList.end(), mInvaderList->begin(), mInvaderList->end());
 
     mSpriteList.push_back(mCannon);
     mSpriteList.push_back(mProjectile);
     mSpriteList.push_back(mBomb);
-    mSpriteList.insert(mSpriteList.end(), mInvaderList->begin(), mInvaderList->end());
-
-    mScore = 0;
 }
-
 
 void Game::Update(int referenceTicks) {
     mInvaderList->Update(referenceTicks);
@@ -66,7 +60,7 @@ void Game::Update(int referenceTicks) {
         mProjectile->Hide();
       }else{
           for(auto &inv:*mInvaderList){
-              if(mProjectile->Collided(*inv)){
+              if(!(*inv).Destroyed() && mProjectile->Collided(*inv)){
                   std::cout << "Hit!" << std::endl;
                   mProjectile->Hide();
                   inv->Destroy();
@@ -97,7 +91,7 @@ void Game::Update(int referenceTicks) {
         }
     }
 
-    if(mInvaderList->size() == 0){
+    if(mInvaderList->Destroyed()){
         mGameStateManager.SetState(GameState::Won);
     }
 }
@@ -113,7 +107,7 @@ void Game::Run(int delayBetweenFramesMs, Controller &controller, Renderer &rende
         // game loop
         controller.HandleInput(mGameStateManager, *mCannon);
 
-        MessageBoxOutput choice;
+        MessageBoxOutput choice = MessageBoxOutput::Unknown;
         switch(mGameStateManager.GetState()){
             case GameState :: Started:
                 Start();
@@ -149,6 +143,21 @@ void Game::Run(int delayBetweenFramesMs, Controller &controller, Renderer &rende
 }
 
 void Game::Start() {
-    mCannon -> Move(mWindowWidth/2, mWindowHeight - mCannon->H());
+    mCannon->Move(mWindowWidth/2, mWindowHeight - mCannon->H());
+    mCannon->Reset();
+    mCannon->Display();
+    mProjectile->Hide();
+    mBomb->Hide();
+    mInvaderList->Reset();
+
+    for(int row = 0; row < mNumRows; row++) {
+        for (int col = 0; col < mNumEnemiesPerRow; col++) {
+            auto invader = (*mInvaderList)[row*mNumEnemiesPerRow+col];
+            invader->Move(invader->W() + (2*col*invader->W()), (mWindowHeight / 5) + (2*row*invader->H()));
+            invader->Display();
+        }
+    }
+
+    mScore = 0;
 }
 

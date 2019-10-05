@@ -30,8 +30,11 @@ private:
     std::shared_ptr<InvaderList> mInvaderList;
     std::shared_ptr<Sprite> mBomb;
 
+    std::vector<std::vector<Rect>> mEnemyAnimations;
+
     int mScore;
     int mWindowWidth, mWindowHeight, mWindowOffset;
+    int mNumRows, mNumEnemiesPerRow;
 
     void Update(int referenceTicks);
 

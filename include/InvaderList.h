@@ -17,7 +17,7 @@ public:
 
     InvaderList(int animationSpeedMs, int leftBound, int rightBound, int lowerBound, std::shared_ptr<Sprite> bomb)
         : mCurrentDirection(Direction::Right), mNextDirectionAfterDown(Direction::Left)
-        , mFrameStart(0), mBomb(bomb), mAnimateSpeedMs(animationSpeedMs)
+        , mFrameStart(0), mBomb(bomb), mStartAnimateSpeedMs(animationSpeedMs), mCurrentAnimateSpeedMs(animationSpeedMs)
         , mLeftBound(leftBound), mRightBound(rightBound), mLowerBound(lowerBound){
 
         std::random_device rd;
@@ -30,11 +30,16 @@ public:
 
         void IncreaseAnimationSpeed();
 
+        void Reset();
+
+        bool Destroyed();
+
 private:
     Direction mCurrentDirection;
     Direction mNextDirectionAfterDown;
     int mLeftBound, mRightBound, mLowerBound;
-    int mAnimateSpeedMs;
+    int mStartAnimateSpeedMs;
+    int mCurrentAnimateSpeedMs;
     int mFrameStart;
     std::mt19937 mRandomEngine;
 

@@ -49,6 +49,11 @@ public:
         mDestroyed = true;
     }
 
+    void Reset(){
+        SetAnimationIndex(0);
+        mDestroyed = false;
+    }
+
 private:
     std::shared_ptr<Sprite> mProjectile;
     int mWindowWidth;

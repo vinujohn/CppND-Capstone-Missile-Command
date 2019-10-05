@@ -10,7 +10,8 @@
 
 class Invader : public Sprite{
 public:
-    Invader(std::vector<Rect> animations, int startAnimationIndex) : mDestroyed(false), Sprite(animations){
+    Invader(std::vector<Rect> animations, int startAnimationIndex)
+            : mStartAnimationIndex(startAnimationIndex), mDestroyed(false), Sprite(animations){
         SetAnimationIndex(startAnimationIndex);
     }
 
@@ -60,8 +61,14 @@ public:
         return false;
     }
 
+    void Reset(){
+        SetAnimationIndex(mStartAnimationIndex);
+        mDestroyed = false;
+    }
+
 private:
     bool mDestroyed = false;
+    int mStartAnimationIndex;
 };
 
 #endif //SPACEINVADERS_INVADER_H
