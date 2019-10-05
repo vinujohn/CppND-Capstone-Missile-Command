@@ -30,7 +30,7 @@ private:
 
 public:
     Renderer(int windowWidth, int windowHeight, const std::string &backgroundFilePath,
-             const std::string &spriteSheetFilePath);
+             const std::string &spriteSheetFilePath, bool useHardwareAcceleration = false);
 
     ~Renderer();
 

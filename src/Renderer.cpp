@@ -17,7 +17,7 @@ void Renderer::ThrowIfError(bool isError, const std::string &errMsg) {
 }
 
 Renderer::Renderer(int windowWidth, int windowHeight, const std::string &backgroundFilePath,
-                   const std::string &spriteFilePath)
+                   const std::string &spriteFilePath, bool useHardwareAcceleration)
         : mWindowWidth(windowWidth), mWindowHeight(windowHeight) {
     // initialize SDL
     ThrowIfError(
@@ -41,20 +41,7 @@ Renderer::Renderer(int windowWidth, int windowHeight, const std::string &backgro
             mWindow == nullptr,
             "could not initialize window");
 
-    // find out if hardware acceleration supported
-    SDL_RendererInfo info;
-    SDL_RendererFlags flags = SDL_RENDERER_SOFTWARE; // default to software rendering
-    auto drivers = SDL_GetNumRenderDrivers();
-    std::cout << "number of drivers is " << drivers << std::endl;
-    for(int i = 0; i < drivers; i++){
-        SDL_GetRenderDriverInfo(i, &info);
-        std::cout << "supported driver: " << info.name << std::endl;
-        if(std::string(info.name) == "opengl" || std::string(info.name) == "direct3d"){
-            std::cout << "driver supports hardware acceleration" << std::endl;
-            flags = SDL_RENDERER_ACCELERATED;
-            break;
-        }
-    }
+    SDL_RendererFlags flags = useHardwareAcceleration ? SDL_RENDERER_ACCELERATED: SDL_RENDERER_SOFTWARE;
 
     // create a renderer
     mRenderer = SDL_CreateRenderer(
