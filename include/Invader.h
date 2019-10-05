@@ -10,52 +10,27 @@
 
 class Invader : public Sprite {
 public:
-    Invader(std::vector<Rect> animations, int startAnimationIndex)
-            : mStartAnimationIndex(startAnimationIndex), mDestroyed(false), Sprite(animations) {
-        SetAnimationIndex(startAnimationIndex);
-    }
+    Invader(std::vector<Rect> animations, int startAnimationIndex);
 
-    void Animate() {
-        SetAnimationIndex((GetAnimationIndex() + 1) % 2);
-    }
+    void Animate();
 
-    void Destroy() {
-        SetAnimationIndex(2);
-        mDestroyed = true;
-    }
+    void Destroy();
 
-    bool Destroyed() {
-        return mDestroyed;
-    }
+    bool Destroyed();
 
-    bool CanMoveRight(int bound) {
-        return X() + W() < bound;
-    }
+    bool CanMoveRight(int bound);
 
-    void MoveRight() {
-        Move(X() + W(), Y());
-    };
+    void MoveRight();;
 
-    bool CanMoveLeft(int bound) {
-        return X() - W() >= bound;
-    }
+    bool CanMoveLeft(int bound);
 
-    void MoveLeft() {
-        Move(X() - W(), Y());
-    }
+    void MoveLeft();
 
-    void MoveDown() {
-        Move(X(), Y() + H());
-    }
+    void MoveDown();
 
-    bool CanMoveDown(int bound) {
-        return Y() + H() < bound;
-    }
+    bool CanMoveDown(int bound);
 
-    void Reset() {
-        SetAnimationIndex(mStartAnimationIndex);
-        mDestroyed = false;
-    }
+    void Reset();
 
 private:
     bool mDestroyed = false;

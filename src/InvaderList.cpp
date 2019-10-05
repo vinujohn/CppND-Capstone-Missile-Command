@@ -4,6 +4,21 @@
 #include "InvaderList.h"
 #include <random>
 
+InvaderList::InvaderList(int animationSpeedMs, int leftBound, int rightBound, int lowerBound, std::shared_ptr<Sprite> bomb)
+        : mCurrentDirection(Direction::Right)
+        , mNextDirectionAfterDown(Direction::Left)
+        , mFrameStart(0)
+        , mBomb(bomb)
+        , mStartAnimateSpeedMs(animationSpeedMs)
+        , mCurrentAnimateSpeedMs(animationSpeedMs)
+        , mLeftBound(leftBound)
+        , mRightBound(rightBound)
+        , mLowerBound(lowerBound) {
+
+    std::random_device rd;
+    mRandomEngine = std::mt19937{rd()};
+}
+
 void InvaderList::Update(int referenceTicks) {
     if (referenceTicks - mFrameStart > mCurrentAnimateSpeedMs) {
         mFrameStart = referenceTicks;

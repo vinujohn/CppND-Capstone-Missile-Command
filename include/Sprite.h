@@ -13,49 +13,35 @@ struct Rect {
 
 class Sprite {
 public:
-    Sprite(std::vector<Rect> animations)
-            : mAnimations(animations), mDisplayed(false), mCurrentAnimationIndex(0) {
-        //Take height and width from first animation for now.
-        mScreen = Rect{0, 0, animations[0].w, animations[0].h};
-    }
+    Sprite(const std::vector<Rect>& animations);
 
-    void Hide() { mDisplayed = false; }
+    void Hide();
 
-    void Display() { mDisplayed = true; }
+    void Display();
 
-    bool Displayed() { return mDisplayed; }
+    bool Displayed();
 
-    const int X() { return mScreen.x; }
+    int X();
 
-    const int Y() { return mScreen.y; }
+    int Y();
 
-    const int W() { return mScreen.w; }
+    int W();
 
-    const int H() { return mScreen.h; }
+    int H();
 
-    void SetAnimationIndex(int index) { mCurrentAnimationIndex = index; }
+    void SetAnimationIndex(int index);
 
-    int GetAnimationIndex() { return mCurrentAnimationIndex; }
+    int GetAnimationIndex();
 
-    const Rect GetCurrentAnimation() { return mAnimations[mCurrentAnimationIndex]; }
+    Rect GetCurrentAnimation();
 
-    void Move(int x, int y) {
-        mScreen.x = x;
-        mScreen.y = y;
-    }
+    void Move(int x, int y);
 
-    bool Collided(Sprite &sprite) {
-        if (this->X() >= sprite.X() && this->X() <= sprite.X() + sprite.W()) {
-            if (this->Y() <= sprite.Y() && (this->Y() + this->H()) >= sprite.Y()) {
-                return true;
-            }
-        }
-        return false;
-    }
+    bool Collided(Sprite &sprite);
 
 private:
     std::vector<Rect> mAnimations;
-    Rect mScreen;
+    Rect mPosition;
     bool mDisplayed;
     int mCurrentAnimationIndex;
 };
