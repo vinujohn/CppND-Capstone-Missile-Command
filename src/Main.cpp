@@ -7,12 +7,12 @@
 
 int main() {
     constexpr int windowWidth = 300;
-    constexpr int windowHeight = 300;
+    constexpr int windowHeight = 350;
     constexpr int windowOffset = 20;
     const std::string bgFile = "./assets/space.png";
     const std::string spriteFile = "./assets/sprites.png";
     const int FPS = 60;
-    const int DELAY_TIME = 1000.0f / FPS;
+    const int DELAY_TIME = static_cast<const int>(1000.0f / FPS);
 
     Game g(windowWidth, windowHeight, windowOffset);
 

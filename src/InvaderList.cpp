@@ -90,7 +90,7 @@ void InvaderList::DropBomb() {
         std::copy_if(this->begin(), this->end(), std::back_inserter(aliveInvaders),
                      [](std::shared_ptr<Invader> i) { return !i->Destroyed(); });
 
-        std::uniform_int_distribution<int> dist(0, aliveInvaders.size() - 1);
+        std::uniform_int_distribution<int> dist(0, static_cast<int>(aliveInvaders.size() - 1));
         std::shared_ptr<Invader> randomInvader = aliveInvaders[dist(mRandomEngine)];
 
         int x = randomInvader->X() - 3 + (randomInvader->W() / 2);

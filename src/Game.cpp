@@ -11,10 +11,12 @@
 Game::Game(int windowWidth, int windowHeight, int windowOffset)
         : mWindowWidth(windowWidth), mWindowHeight(windowHeight), mWindowOffset(windowOffset) {
 
+    mGameStateManager = std::make_shared<GameStateManager>();
+
     // TODO remove this to outside of Game using some type of builder pattern.
     mProjectile = std::shared_ptr<Sprite>(new Sprite(std::vector<Rect>{{20, 60, 20, 14}}));
-    mCannon = std::shared_ptr<Cannon>(new Cannon(windowWidth, std::vector<Rect>{{20, 42, 20, 18},
-                                                                                {0,  42, 20, 18}}, mProjectile));
+    mCannon = std::shared_ptr<Cannon>(new Cannon(std::vector<Rect>{{20, 42, 20, 18},
+                                                                   {0,  42, 20, 18}}, windowWidth, mProjectile, 2));
     mBomb = std::shared_ptr<Sprite>(new Sprite(std::vector<Rect>{{0, 69, 20, 14}}));
     mInvaderList = std::shared_ptr<InvaderList>(
             new InvaderList(500, windowOffset, windowWidth - windowOffset, windowHeight - windowOffset, mBomb));
@@ -37,7 +39,7 @@ Game::Game(int windowWidth, int windowHeight, int windowOffset)
     };
 
     mNumEnemiesPerRow = 5;
-    mNumRows = 1;
+    mNumRows = 3;
     for (int row = 0; row < mNumRows; row++) {
         for (int col = 0; col < mNumEnemiesPerRow; col++) {
             auto invader = std::shared_ptr<Invader>(new Invader(mEnemyAnimations[row], col % 2));
@@ -75,7 +77,7 @@ void Game::Update(int referenceTicks) {
 
     if (mInvaderList->Landed()) {
         mCannon->Destroy();
-        mGameStateManager.SetState(GameState::Lost);
+        mGameStateManager->SetState(GameState::Lost);
     }
 
     if (mBomb->Displayed()) {
@@ -88,32 +90,32 @@ void Game::Update(int referenceTicks) {
             if (mBomb->Collided(*mCannon)) {
                 mCannon->Destroy();
                 mBomb->Hide();
-                mGameStateManager.SetState(GameState::Lost);
+                mGameStateManager->SetState(GameState::Lost);
             }
         }
     }
 
     if (mInvaderList->Destroyed()) {
-        mGameStateManager.SetState(GameState::Won);
+        mGameStateManager->SetState(GameState::Won);
     }
 }
 
 void Game::Run(int delayBetweenFramesMs, Controller &controller, Renderer &renderer) {
     Uint32 frameStart, frameTime;
-    mGameStateManager.SetState(GameState::Started);
+    mGameStateManager->SetState(GameState::Started);
 
-    while (mGameStateManager.GetState() != GameState::Exited) {
+    while (!mGameStateManager->ShouldExitNow()) {
 
         frameStart = SDL_GetTicks();
 
         // game loop
-        controller.HandleInput(mGameStateManager, *mCannon);
+        controller.HandleInput(*mGameStateManager, *mCannon);
 
         MessageBoxOutput choice = MessageBoxOutput::Unknown;
-        switch (mGameStateManager.GetState()) {
+        switch (mGameStateManager->GetState()) {
             case GameState::Started:
                 Start();
-                mGameStateManager.SetState((GameState::Running));
+                mGameStateManager->SetState((GameState::Running));
                 break;
             case GameState::Running:
                 Update(frameStart);
@@ -126,17 +128,20 @@ void Game::Run(int delayBetweenFramesMs, Controller &controller, Renderer &rende
             case GameState::Lost:
                 choice = renderer.DisplayEndGameMessage("You Lose!", mScore);
                 break;
+            case GameState::ExitCalled:
+                mGameStateManager->mExitNow = true;
+                break;
         }
 
         if (choice == MessageBoxOutput::Yes) {
-            mGameStateManager.SetState(GameState::Started);
+            mGameStateManager->SetState(GameState::Started);
         } else if (choice == MessageBoxOutput::Exit) {
-            mGameStateManager.ExitGame();
+            mGameStateManager->ExitGame();
         }
 
         frameTime = SDL_GetTicks() - frameStart;
         if (frameTime < delayBetweenFramesMs) {
-            SDL_Delay((int) (delayBetweenFramesMs - frameTime));
+            SDL_Delay((delayBetweenFramesMs - (int)frameTime));
         }
     }
 
@@ -149,8 +154,8 @@ void Game::Start() {
     mCannon->Display();
     mProjectile->Hide();
     mBomb->Hide();
-    mInvaderList->Reset();
 
+    mInvaderList->Reset();
     for (int row = 0; row < mNumRows; row++) {
         for (int col = 0; col < mNumEnemiesPerRow; col++) {
             auto invader = (*mInvaderList)[row * mNumEnemiesPerRow + col];

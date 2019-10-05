@@ -29,10 +29,7 @@ public:
     }
 
     bool CanMoveRight(int bound) {
-        if (X() + W() < bound) {
-            return true;
-        }
-        return false;
+        return X() + W() < bound;
     }
 
     void MoveRight() {
@@ -40,10 +37,7 @@ public:
     };
 
     bool CanMoveLeft(int bound) {
-        if (X() - W() >= bound) {
-            return true;
-        }
-        return false;
+        return X() - W() >= bound;
     }
 
     void MoveLeft() {
@@ -55,10 +49,7 @@ public:
     }
 
     bool CanMoveDown(int bound) {
-        if (Y() + H() < bound) {
-            return true;
-        }
-        return false;
+        return Y() + H() < bound;
     }
 
     void Reset() {

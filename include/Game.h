@@ -22,7 +22,7 @@ public:
     void Run(int delayBetweenFramesMs, Controller &, Renderer &);
 
 private:
-    GameStateManager mGameStateManager; //todo change to unique ptr
+    std::shared_ptr<GameStateManager> mGameStateManager;
 
     std::vector<std::shared_ptr<Sprite>> mSpriteList;
     std::shared_ptr<Cannon> mCannon;
