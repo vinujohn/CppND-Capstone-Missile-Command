@@ -65,11 +65,11 @@ void Game::Update(int referenceTicks) {
         } else {
             for (auto &inv:*mInvaderList) {
                 if (!(*inv).Destroyed() && mProjectile->Collided(*inv)) {
-                    std::cout << "Hit!" << std::endl;
                     mProjectile->Hide();
                     inv->Destroy();
                     mScore += 10;
                     mInvaderList->IncreaseAnimationSpeed();
+                    std::cout << "Enemy Destroyed" << std::endl;
                 }
             }
         }
@@ -78,6 +78,7 @@ void Game::Update(int referenceTicks) {
     if (mInvaderList->Landed()) {
         mCannon->Destroy();
         mGameStateManager->SetState(GameState::Lost);
+        std::cout << "Invasion Successful" << std::endl;
     }
 
     if (mBomb->Displayed()) {
@@ -91,12 +92,14 @@ void Game::Update(int referenceTicks) {
                 mCannon->Destroy();
                 mBomb->Hide();
                 mGameStateManager->SetState(GameState::Lost);
+                std::cout << "Cannon Destroyed" << std::endl;
             }
         }
     }
 
     if (mInvaderList->Destroyed()) {
         mGameStateManager->SetState(GameState::Won);
+        std::cout << "All Enemies Destroyed" << std::endl;
     }
 }
 

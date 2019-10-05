@@ -41,7 +41,7 @@ void InvaderList::Move() {
 
 bool InvaderList::Landed() {
     for (auto &inv : *this) {
-        if (!inv->CanMoveDown(mLowerBound)) {
+        if (!inv->Destroyed() && !inv->CanMoveDown(mLowerBound)) {
             return true;
         }
     }
