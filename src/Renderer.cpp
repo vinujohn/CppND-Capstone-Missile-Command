@@ -41,11 +41,26 @@ Renderer::Renderer(int windowWidth, int windowHeight, const std::string &backgro
             mWindow == nullptr,
             "could not initialize window");
 
+    // find out if hardware acceleration supported
+    SDL_RendererInfo info;
+    SDL_RendererFlags flags = SDL_RENDERER_SOFTWARE; // default to software rendering
+    auto drivers = SDL_GetNumRenderDrivers();
+    std::cout << "number of drivers is " << drivers << std::endl;
+    for(int i = 0; i < drivers; i++){
+        SDL_GetRenderDriverInfo(i, &info);
+        std::cout << "supported driver: " << info.name << std::endl;
+        if(std::string(info.name) == "opengl" || std::string(info.name) == "direct3d"){
+            std::cout << "driver supports hardware acceleration" << std::endl;
+            flags = SDL_RENDERER_ACCELERATED;
+            break;
+        }
+    }
+
     // create a renderer
     mRenderer = SDL_CreateRenderer(
             mWindow,
             -1,
-            SDL_RENDERER_ACCELERATED);
+            flags);
     ThrowIfError(
             mRenderer == nullptr,
             "could not create renderer");
@@ -119,7 +134,7 @@ MessageBoxOutput Renderer::DisplayEndGameMessage(std::string message, int score)
     const SDL_MessageBoxData messageboxdata = {
             SDL_MESSAGEBOX_INFORMATION,
             mWindow,
-            "Game Over.  Do you want to play again?",
+            "Play again?",
             message.c_str(),
             SDL_arraysize(buttons),
             buttons,

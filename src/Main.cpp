@@ -5,7 +5,7 @@
 #include "Game.h"
 
 int main() {
-    constexpr int windowWidth = 300;
+    constexpr int windowWidth = 350;
     constexpr int windowHeight = 350;
     constexpr int windowOffset = 20;
 
