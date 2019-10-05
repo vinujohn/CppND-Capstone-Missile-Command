@@ -3,6 +3,7 @@
 //
 #include "InvaderList.h"
 #include <random>
+#include <algorithm>
 
 InvaderList::InvaderList(
         int animationSpeedMs

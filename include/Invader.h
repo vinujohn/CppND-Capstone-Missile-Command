@@ -7,6 +7,7 @@
 
 #include "Sprite.h"
 #include <iostream>
+#include <memory>
 
 class Invader : public Sprite {
 public:
