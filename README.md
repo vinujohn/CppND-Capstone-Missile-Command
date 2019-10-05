@@ -23,12 +23,13 @@ framerate while handling user input for the player.  The project itself is compo
         * Renders a frame onto the screen
         * Holds all SDL2 rendering objects
         * Is used by the Game class to render assets to the screen, display message boxes, and update the title bar
+        * Does not know anything about the current game state
     * Controller/KeyboardController
         * Controls the Cannon object by setting its state so that it can move left or right and fire a projectile based
         on keyboard input.
         * KeyboardController inherits from Controller.  Another controller could also be used like a 
         JoystickController and just plugged into the game.
-        * Listens for the SDL2 Exit game event when the user tries to leave the game by closing the window.
+        * Listens for the SDL2 Exit game event when the user tries to leave the game by closing the game window.
         * Used by the Game class to be called on every time input is needed.
 * Minor Components
     * Sprite
@@ -38,7 +39,7 @@ framerate while handling user input for the player.  The project itself is compo
     * Cannon
         * Controlled by the player
         * Can move left or right and fire a projectile
-        * Can be destroyed by invader bombs or if an invader has reach the bottom of the screen
+        * Can be destroyed by invader bombs or if an invader has reached the bottom of the screen
     * Invader/InvaderList
         * Invader made up of multiple animations including a common "destroyed" animation
         * InvaderList derives from a vector of Invaders and holds state information common to all invaders like the
@@ -50,7 +51,21 @@ framerate while handling user input for the player.  The project itself is compo
         * Friend class to the Game itself
 </p>
 
----
+## Project Rubric
+| Major Section   |      Criteria      |  Examples |
+|-----------------------------|-------------|------|
+| Loops, Functions, I/O       |  The project demonstrates an understanding of C++ functions and control structures. | All Classes |
+| Loops, Functions, I/O       |    The project accepts user input and processes the input   |   KeyboardController.cpp:17-27 |
+| Object Oriented Programming | The project uses Object Oriented Programming techniques. | All Classes |
+| Object Oriented Programming | Classes use appropriate access specifiers for class members. | All Classes |
+| Object Oriented Programming | Class constructors utilize member initialization lists. | All Classes |
+| Object Oriented Programming | Classes abstract implementation details from their interfaces. | Cannon.h, Invader.h |
+| Object Oriented Programming | Classes follow an appropriate inheritance hierarchy. | Controller.h, KeyboardController.h |
+| Object Oriented Programming | Derived class functions override virtual base class functions. | Cannon.h:27, Invader.h:33 |
+| Memory Management | The project makes use of references in function declarations. | Game.h:28, KeyboardController.h:13 |
+| Memory Management | The project uses destructors appropriately. | Renderer.cpp:66 |
+| Memory Management | The project uses smart pointers instead of raw pointers. | Game.h:33-37 |
+
 ## Dependencies for Running Locally
 * cmake >= 3.7
   * All OSes: [click here for installation instructions](https://cmake.org/install/)
