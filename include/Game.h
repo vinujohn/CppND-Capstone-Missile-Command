@@ -17,7 +17,15 @@
 
 class Game {
 public:
-    Game(int windowWidth, int windowHeight, int windowOffset);
+    Game(int windowWidth
+            , int windowHeight
+            , int windowOffset
+            , std::shared_ptr<Sprite> projectile
+            , std::shared_ptr<Cannon> cannon
+            , std::shared_ptr<Sprite> bomb
+            , std::shared_ptr<InvaderList> invaderList  //TODO figure out if this can not be a ptr
+            , int numRows
+            , int numInvadersPerRow);
 
     void Run(int delayBetweenFramesMs, Controller &, Renderer &);
 
@@ -34,7 +42,7 @@ private:
 
     int mScore;
     int mWindowWidth, mWindowHeight, mWindowOffset;
-    int mNumRows, mNumEnemiesPerRow;
+    int mNumRows, mNumInvadersPerRow;
 
     void Update(int referenceTicks);
 
