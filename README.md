@@ -12,7 +12,7 @@ The game works using the SDL2 game engine to render a bunch of different sprites
 
 ![file system][files]
 
-[files]: https://github.com/vinujohn/CppND-Capstone-Space-Invaders/markdown/files.png
+[files]: https://github.com/vinujohn/CppND-Capstone-Space-Invaders/blob/master/markdown/files.png
 ## Dependencies for Running Locally
 * cmake >= 3.7
   * All OSes: [click here for installation instructions](https://cmake.org/install/)
