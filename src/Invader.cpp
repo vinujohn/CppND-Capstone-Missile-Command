@@ -50,4 +50,5 @@ bool Invader::CanMoveDown(int bound) {
 void Invader::Reset() {
     SetAnimationIndex(mStartAnimationIndex);
     mDestroyed = false;
+    this->Display();
 }

@@ -21,6 +21,7 @@ void Cannon::Reset() {
     this->Move(mWindowWidth / 2, mWindowHeight - this->H());
     SetAnimationIndex(0);
     mDestroyed = false;
+    this->Display();
 }
 
 void Cannon::Fire() {

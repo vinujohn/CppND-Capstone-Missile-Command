@@ -43,15 +43,15 @@ int main() {
         }
     };
 
-    constexpr int moveCannonBy = 2;
+    constexpr int moveCannonByPx = 2;
     constexpr int enemyAnimationSpeedMs = 500;
     constexpr int increaseAnimationSpeedByMs = 20;
-    constexpr int numInvadersPerRow = 1;
+    constexpr int numInvadersPerRow = 5;
     const int numInvaderRows = invaderAnimations.size();
 
     /* Build game assets */
     auto projectile = std::shared_ptr<Sprite>(new Sprite(projectileAnimations));
-    auto cannon = std::shared_ptr<Cannon>(new Cannon(cannonAnimations, windowWidth, windowHeight, projectile, moveCannonBy));
+    auto cannon = std::shared_ptr<Cannon>(new Cannon(cannonAnimations, windowWidth, windowHeight, projectile, moveCannonByPx));
     auto bomb = std::shared_ptr<Sprite>(new Sprite(bombAnimations));
     auto invaderList = std::shared_ptr<InvaderList>(
             new InvaderList(enemyAnimationSpeedMs, increaseAnimationSpeedByMs, numInvaderRows, numInvadersPerRow,

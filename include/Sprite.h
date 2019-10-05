@@ -39,6 +39,8 @@ public:
 
     bool Collided(Sprite &sprite);
 
+    virtual void Reset();
+
 private:
     std::vector<Rect> mAnimations;
     Rect mPosition;

@@ -24,7 +24,7 @@ public:
 
     void Destroy();
 
-    void Reset();
+    void Reset() override;
 
 private:
     std::shared_ptr<Sprite> mProjectile;

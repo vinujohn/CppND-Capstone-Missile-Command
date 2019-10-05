@@ -132,15 +132,10 @@ void InvaderList::Reset() {
     mFrameStart = 0;
     mCurrentAnimateSpeedMs = mStartAnimateSpeedMs;
 
-    for (auto &inv : *this) {
-        inv->Reset();
-    }
-
     for (int row = 0; row < mNumRows; row++) {
         for (int col = 0; col < mNumCols; col++) {
             auto invader = (*this)[row * mNumCols + col];
             invader->Move(invader->W() + (2 * col * invader->W()), (mLowerBound / 5) + (2 * row * invader->H()));
-            invader->Display();
         }
     }
 }

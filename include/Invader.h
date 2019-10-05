@@ -30,7 +30,7 @@ public:
 
     bool CanMoveDown(int bound);
 
-    void Reset();
+    void Reset() override;
 
 private:
     bool mDestroyed = false;

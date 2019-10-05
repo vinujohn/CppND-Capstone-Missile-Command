@@ -130,10 +130,10 @@ void Game::Run(int delayBetweenFramesMs, Controller &controller, Renderer &rende
 }
 
 void Game::Start() {
-    mCannon->Reset();
-    mCannon->Display();
-    mProjectile->Hide();
-    mBomb->Hide();
+    for(auto& sprite: mSpriteList){
+        sprite->Reset();
+    }
+
     mInvaderList->Reset();
 
     mScore = 0;

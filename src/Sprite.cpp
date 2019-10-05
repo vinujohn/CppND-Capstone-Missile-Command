@@ -44,3 +44,7 @@ bool Sprite::Collided(Sprite &sprite) {
     }
     return false;
 }
+
+void Sprite::Reset() {
+    this->Hide();
+}
