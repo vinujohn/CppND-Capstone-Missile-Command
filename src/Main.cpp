@@ -48,6 +48,7 @@ int main() {
     constexpr int increaseAnimationSpeedByMs = 20;
     constexpr int numInvadersPerRow = 5;
     const int numInvaderRows = invaderAnimations.size();
+    constexpr bool useHardwareAcceleration = true;
 
     /* Build game assets */
     auto projectile = std::shared_ptr<Sprite>(new Sprite(projectileAnimations));
@@ -68,7 +69,7 @@ int main() {
     Game g(windowWidth, windowHeight, windowOffset, projectile, cannon, bomb, invaderList);
 
     KeyboardController controller;
-    Renderer renderer(windowWidth, windowHeight, bgFile, spriteFile);
+    Renderer renderer(windowWidth, windowHeight, bgFile, spriteFile, useHardwareAcceleration);
 
     g.Run(DELAY_TIME, controller, renderer);
 
